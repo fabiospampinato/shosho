@@ -1,6 +1,10 @@
 
 /* MAIN */
 
+type Checker = {
+  ( event: Event ): boolean
+};
+
 type Disposer = {
   (): void
 };
@@ -27,9 +31,9 @@ type HandlerOptions = {
 type Options = {
   capture?: boolean,
   target?: Window | Document | HTMLElement | SVGElement | MathMLElement,
-  shouldHandleEvent?: ( event: KeyboardEvent | MouseEvent ) => boolean
+  shouldHandleEvent?: ( event: Event ) => boolean
 };
 
 /* EXPORT */
 
-export type {Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options};
+export type {Checker, Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options};

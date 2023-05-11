@@ -126,6 +126,12 @@ const sum = ( values: number[] ): number => {
 
 };
 
+const yep = (): true => {
+
+  return true;
+
+};
+
 /* EXPORT */
 
-export {attempt, castArray, enumerate, escapeRe, first, isArray, isEmpty, isMac, isString, last, nope, or, sum};
+export {attempt, castArray, enumerate, escapeRe, first, isArray, isEmpty, isMac, isString, last, nope, or, sum, yep};

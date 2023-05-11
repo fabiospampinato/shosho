@@ -4,8 +4,8 @@
 import {MODIFIER_BITMASK, TRIGGER_BITMASK} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
 import {CHAR2ID, CODE2ID, KEY2ID, MOUSE2ID} from './maps';
-import {attempt, castArray, enumerate, escapeRe, first, isString, nope, or} from './utils';
-import type {Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options} from './types';
+import {attempt, castArray, enumerate, escapeRe, first, isString, nope, or, yep} from './utils';
+import type {Checker, Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
 
@@ -67,6 +67,7 @@ class ShoSho {
   private chordsKonami: number[];
   private depth: number;
   private depthKonami: number;
+  private shouldHandle: Checker;
   private options: Options;
 
   private tree: ChordNode = {
@@ -92,6 +93,7 @@ class ShoSho {
     this.chordsKonami = [0];
     this.depth = 0;
     this.depthKonami = 0;
+    this.shouldHandle = options.shouldHandleEvent || yep;
     this.options = options;
 
   }
@@ -99,6 +101,8 @@ class ShoSho {
   /* PRIVATE API */
 
   private onDown = ( event: Event ): void => {
+
+    if ( !this.shouldHandle ( event ) ) return;
 
     const index = this.chords.length - 1;
     const indexKonami = this.chordsKonami.length - 1;
@@ -144,6 +148,8 @@ class ShoSho {
   };
 
   private onUp = ( event: Event ): void => {
+
+    if ( !this.shouldHandle ( event ) ) return;
 
     const index = this.chords.length - 1;
     const indexKonami = this.chordsKonami.length - 1;
