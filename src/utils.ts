@@ -52,6 +52,18 @@ const enumerate = ( parts: (number | number[])[] ): number[][] => { // Exhaustiv
 
 };
 
+const escapeRe = (() => {
+
+  const unescapedRe = /[\\^$.*+?()[\]{}|]/g;
+
+  return ( re: string ): string => {
+
+    return re.replace ( unescapedRe, char => `\\${char}` );
+
+  };
+
+})();
+
 const first = <T> ( values: T[] ): T | undefined => {
 
   return values[0];
@@ -116,4 +128,4 @@ const sum = ( values: number[] ): number => {
 
 /* EXPORT */
 
-export {attempt, castArray, enumerate, first, isArray, isEmpty, isMac, isString, last, nope, or, sum};
+export {attempt, castArray, enumerate, escapeRe, first, isArray, isEmpty, isMac, isString, last, nope, or, sum};

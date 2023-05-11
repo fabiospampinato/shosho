@@ -11,6 +11,7 @@ A modern and powerful shortcuts managment library.
 - It supports simple shortcuts, like `Ctrl+F`, and shortcuts sequences, like `Ctrl+K Ctrl+F`.
 - It supports detecting which exact modifier key was pressed, like `ControlLeft` or `ControlRight`.
 - It supports common aliases for keys, like `Alt`/`Option`, or `Esc`/`Escape`.
+- It supports some character-based shortcuts, like `Shift+#`, rather than the equivalent key-based shortcut, which might be `Shift+3`.
 - It supports automatically using `Command` under macOS and `Control` elsewhere, by writing for example `CommandOrControl+F`.
 
 ## Shortcut Syntax
@@ -26,9 +27,8 @@ The following keys can be used when defining a shortcut:
 - **Numpad digits**: <kbd>Numpad0-Numpad9</kbd>.
 - **Numpad operators**: <kbd>NumpadAdd</kbd>, <kbd>NumpadComma</kbd>, <kbd>NumpadDecimal</kbd>, <kbd>NumpadDivide</kbd>, <kbd>NumpadEnter</kbd>, <kbd>NumpadEqual</kbd>, <kbd>NumpadMultiply</kbd>, <kbd>NumpadSubtract</kbd>.
 - **Special keys**: <kbd>Backspace</kbd>, <kbd>Capslock</kbd>, <kbd>Del</kbd>/<kbd>Delete</kbd>, <kbd>Down</kbd>, <kbd>End</kbd>, <kbd>Enter</kbd>/<kbd>Return</kbd>, <kbd>Esc</kbd>/<kbd>Escape</kbd>, <kbd>Home</kbd>, <kbd>Insert</kbd>, <kbd>Left</kbd>, <kbd>PageDown</kbd>, <kbd>PageUp</kbd>, <kbd>Right</kbd>, <kbd>Space</kbd>/<kbd>Spacebar</kbd>, <kbd>Tab</kbd>, <kbd>Up</kbd>, <kbd>NumLock</kbd>, <kbd>ScrollLock</kbd>.
+- **Punctuation keys**: <kbd>!</kbd>, <kbd>@</kbd>, <kbd>#</kbd>, <kbd>$</kbd>, <kbd>%</kbd>, <kbd>^</kbd>, <kbd>&</kbd>, <kbd>*</kbd>, <kbd>(  </kbd>, <kbd>)</kbd>, <kbd>_</kbd>, <kbd>{</kbd>, <kbd>}</kbd>, <kbd>|</kbd>, <kbd>:</kbd>, <kbd>"</kbd>, <kbd><</kbd>, <kbd>></kbd>, <kbd>?</kbd>, <kbd>~</kbd>.
 - **Mouse buttons**: <kbd>ClickLeft</kbd>/<kbd>MouseLeft</kbd>, <kbd>ClickMiddle</kbd>/<kbd>MouseMiddle</kbd>, <kbd>ClickRight</kbd>/<kbd>MouseRight</kbd>, <kbd>Mouse0-Mouse9</kbd>.
-
-<!-- - **Punctuation keys**: <kbd>!</kbd>, <kbd>"</kbd>, <kbd>#</kbd>, <kbd>$</kbd>, <kbd>%</kbd>, <kbd>&</kbd>, <kbd>'</kbd>, <kbd>(</kbd>, <kbd>)</kbd>, <kbd>*</kbd>, <kbd>+</kbd>/<kbd>plus</kbd>, <kbd>,</kbd>, <kbd>-</kbd>, <kbd>.</kbd>, <kbd>/</kbd>, <kbd>:</kbd>, <kbd>;</kbd>, <kbd><</kbd>, <kbd>=</kbd>, <kbd>></kbd>, <kbd>?</kbd>, <kbd>@</kbd>, <kbd>[</kbd>, <kbd>\\</kbd>, <kbd>]</kbd>, <kbd>^</kbd>, <kbd>_</kbd>, <kbd>`</kbd>, <kbd>{</kbd>, <kbd>|</kbd>, <kbd>}</kbd>, <kbd>~</kbd>. -->
 
 Please note that:
 
@@ -36,6 +36,7 @@ Please note that:
 - ℹ️ Shortcuts are case insensitive.
 - ℹ️ Keys in a single shortcut must be joined by a plus sign (e.g. <kbd>Ctrl+A</kbd>).
 - ℹ️ Sequences of shortcuts must be joined by a space (e.g. <kbd>Ctrl+K Ctrl+B</kbd>).
+- ⚠️ Punctuation keys should be avoided when possible, as they are currently supported in a way that can use differences between layouts.
 
 ## Install
 

@@ -4,10 +4,20 @@
 import {MODIFIER_BITMASK, TRIGGER_BITMASK} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
 import {CHAR2ID, CODE2ID, KEY2ID, MOUSE2ID} from './maps';
-import {attempt, castArray, enumerate, first, isEmpty, isString, nope, or} from './utils';
+import {attempt, castArray, enumerate, escapeRe, first, isString, nope, or} from './utils';
 import type {Disposer, Handler, ChordNode, HandlerNode, Options} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
+
+const normalize = (() => { //TODO: This isn't always correct, the list of chords should be forked instead
+  const digits = { '!': '1', '@': '2', '#': '3', '$': '4', '%': '5', '^': '6', '&': '7', '*': '8', '(': '9', ')': '0' };
+  const punctuation = { '_': '-', '{': '[', '}': ']', '|': '\\', ':': ';', '"': "'", '<': ',', '>': '.', '?': '/', '~': '`' };
+  const replacements = { ...digits, ...punctuation };
+  const re = new RegExp ( `[${Object.keys ( replacements ).map ( escapeRe ).join ( '' )}]`, 'g' );
+  return ( shortcut: string ): string => {
+    return shortcut.replace ( re, char => replacements[char] );
+  };
+})();
 
 const id2modifier = ( id: number ): number => {
   return ( id & MODIFIER_BITMASK );
@@ -43,9 +53,8 @@ const event2id = ( event: Event ): number => {
 
 /* MAIN */
 
-//TODO: Support character-based shortcuts (like Shift+#), by forking the current chords
+//TODO: Support character-based shortcuts (like Shift+#), by forking the current chords, i.e. properly
 //TODO: Support character-based shortcut triggering
-//TODO: Alternatively, though less correct, rewrite some character-based shortcuts when registering them
 //TODO: Support konami codes, by having a ~never-resetting chords array for them
 //TODO: Support recording shortcuts
 //TODO: Support deleting shortcuts with a filter, without the disposer function
@@ -122,7 +131,7 @@ class ShoSho {
 
   register = ( shortcut: string | string[], handler: Handler ): Disposer => {
 
-    const chordseses = castArray ( shortcut ).map ( shortcut2ids );
+    const chordseses = castArray ( shortcut ).map ( normalize ).map ( shortcut2ids );
     const nodes: HandlerNode[] = [];
 
     /* REGISTER */
