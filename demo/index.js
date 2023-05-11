@@ -217,6 +217,8 @@ shosho.register ( 'Shift+ClickLeft' , yep ( 'Shift+ClickLeft' ) );
 shosho.register ( 'Cmd+ClickMiddle' , yep ( 'Cmd+ClickMiddle' ) );
 shosho.register ( 'Alt+ClickLeft Cmd+ClickMiddle' , yep ( 'Alt+ClickLeft Cmd+ClickMiddle' ) );
 
+shosho.register ( 'Up Up Down Down Left Right Left Right B A', yep ( 'Up Up Down Down Left Right Left Right B A 🚀' ), { konami: true } );
+
 shosho.start ();
 
 // setTimeout ( () => {

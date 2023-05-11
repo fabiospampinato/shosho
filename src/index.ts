@@ -5,7 +5,7 @@ import {MODIFIER_BITMASK, TRIGGER_BITMASK} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
 import {CHAR2ID, CODE2ID, KEY2ID, MOUSE2ID} from './maps';
 import {attempt, castArray, enumerate, escapeRe, first, isString, nope, or} from './utils';
-import type {Disposer, Handler, ChordNode, HandlerNode, Options} from './types';
+import type {Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
 
@@ -55,7 +55,6 @@ const event2id = ( event: Event ): number => {
 
 //TODO: Support character-based shortcuts (like Shift+#), by forking the current chords, i.e. properly
 //TODO: Support character-based shortcut triggering
-//TODO: Support konami codes, by having a ~never-resetting chords array for them
 //TODO: Support recording shortcuts
 //TODO: Support deleting shortcuts with a filter, without the disposer function
 
@@ -65,10 +64,19 @@ class ShoSho {
 
   private active: boolean;
   private chords: number[];
+  private chordsKonami: number[];
   private depth: number;
+  private depthKonami: number;
   private options: Options;
 
   private tree: ChordNode = {
+    children: {},
+    handlers: {
+      handler: nope
+    }
+  };
+
+  private treeKonami: ChordNode = {
     children: {},
     handlers: {
       handler: nope
@@ -81,7 +89,9 @@ class ShoSho {
 
     this.active = false;
     this.chords = [0];
+    this.chordsKonami = [0];
     this.depth = 0;
+    this.depthKonami = 0;
     this.options = options;
 
   }
@@ -91,9 +101,11 @@ class ShoSho {
   private onDown = ( event: Event ): void => {
 
     const index = this.chords.length - 1;
+    const indexKonami = this.chordsKonami.length - 1;
     const id = event2id ( event );
 
     this.chords[index] |= id;
+    this.chordsKonami[indexKonami] |= id;
 
     const handled = attempt ( () => this.trigger ( this.chords ), false );
     const triggered = !!id2trigger ( this.chords[index] );
@@ -111,9 +123,21 @@ class ShoSho {
 
     }
 
+    if ( triggered ) {
+
+      this.chordsKonami.push ( this.chordsKonami[indexKonami] &~ id );
+
+    }
+
     if ( this.chords.length > this.depth ) {
 
-      this.chords = this.chords.slice ( - ( this.depth - 1 ) );
+      this.chords = this.chords.slice ( - this.depth );
+
+    }
+
+    if ( this.chordsKonami.length > this.depthKonami ) {
+
+      this.chordsKonami = this.chordsKonami.slice ( - this.depthKonami );
 
     }
 
@@ -122,17 +146,21 @@ class ShoSho {
   private onUp = ( event: Event ): void => {
 
     const index = this.chords.length - 1;
+    const indexKonami = this.chordsKonami.length - 1;
+    const id = event2id ( event );
 
-    this.chords[index] &=~ event2id ( event );
+    this.chords[index] &=~ id;
+    this.chordsKonami[indexKonami] &=~ id;
 
   };
 
   /* PUBLIC API */
 
-  register = ( shortcut: string | string[], handler: Handler ): Disposer => {
+  register = ( shortcut: string | string[], handler: Handler, options: HandlerOptions = {} ): Disposer => {
 
     const chordseses = castArray ( shortcut ).map ( normalize ).map ( shortcut2ids );
     const nodes: HandlerNode[] = [];
+    const konami = !!options.konami;
 
     /* REGISTER */
 
@@ -140,7 +168,7 @@ class ShoSho {
 
       for ( const chords of chordses ) {
 
-        let node = this.tree;
+        let node = konami ? this.treeKonami : this.tree;
         let depth = 0;
 
         for ( const chord of chords ) {
@@ -156,7 +184,15 @@ class ShoSho {
 
         }
 
-        this.depth = Math.max ( this.depth, depth );
+        if ( konami ) {
+
+          this.depthKonami = Math.max ( this.depthKonami, depth );
+
+        } else {
+
+          this.depth = Math.max ( this.depth, depth );
+
+        }
 
         const handlers = node.handlers;
 
@@ -191,38 +227,71 @@ class ShoSho {
   reset = (): void => {
 
     this.tree.children = {};
+    this.treeKonami.children = {};
 
   };
 
   trigger = ( shortcut: string | number | number[], event?: KeyboardEvent | MouseEvent ) : boolean => {
 
     const chords = isString ( shortcut ) ? first ( shortcut2ids ( shortcut ) ) : castArray ( shortcut );
+    const chordsKonami = this.chordsKonami; //TODO: Ugly, maybe there should just be two trigger functions, write this better
 
     if ( !chords ) return false;
 
-    for ( let i = 0, l = chords.length; i < l; i++ ) { // Trying all possible sequences
+    if ( this.depthKonami ) { // Triggering konami shortcuts, which are not stopped by, and don't stop, propagation
 
-      const slice = i ? chords.slice ( i ) : chords;
+      for ( let i = 0, l = chordsKonami.length; i < l; i++ ) { // Trying all possible sequences
 
-      let node: ChordNode | undefined = this.tree;
+        const slice = i ? chordsKonami.slice ( i ) : chordsKonami;
 
-      for ( const chord of slice ) {
+        let node: ChordNode | undefined = this.treeKonami;
 
-        node = node?.children[chord];
+        for ( const chord of slice ) {
+
+          node = node?.children[chord];
+
+        }
+
+        let handler = node?.handlers;
+
+        while ( handler ) {
+
+          handler.handler ( event );
+          handler = handler.prev;
+
+        }
 
       }
 
-      let handler = node?.handlers;
+    }
 
-      while ( handler ) {
+    if ( this.depth ) { // Triggering regular shortcuts, which are stopped by, and stop, propagation
 
-        if ( handler.handler ( event ) !== true ) {
+      for ( let i = 0, l = chords.length; i < l; i++ ) { // Trying all possible sequences
 
-          handler = handler.prev;
+        const slice = i ? chords.slice ( i ) : chords;
 
-        } else {
+        let node: ChordNode | undefined = this.tree;
 
-          return true;
+        for ( const chord of slice ) {
+
+          node = node?.children[chord];
+
+        }
+
+        let handler = node?.handlers;
+
+        while ( handler ) {
+
+          if ( handler.handler ( event ) !== true ) {
+
+            handler = handler.prev;
+
+          } else {
+
+            return true;
+
+          }
 
         }
 

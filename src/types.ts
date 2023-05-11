@@ -20,6 +20,10 @@ type HandlerNode = {
   handler: Handler
 };
 
+type HandlerOptions = {
+  konami?: boolean
+};
+
 type Options = {
   capture?: boolean,
   target?: Window | Document | HTMLElement | SVGElement | MathMLElement,
@@ -28,4 +32,4 @@ type Options = {
 
 /* EXPORT */
 
-export type {Disposer, Handler, ChordNode, HandlerNode, Options};
+export type {Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options};
