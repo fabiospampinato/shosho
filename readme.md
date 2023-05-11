@@ -13,7 +13,7 @@ A modern and powerful shortcuts management library.
 - It supports common aliases for keys, like `Alt`/`Option`, or `Esc`/`Escape`.
 - It supports some character-based shortcuts, like `Shift+#`, rather than the equivalent key-based shortcut, which might be `Shift+3`.
 - It supports automatically using `Command` under macOS and `Control` elsewhere, by writing for example `CommandOrControl+F`.
-- It supports Konami code, a.k.a. cheatcode shortcuts, like `Up Up Down Down Left Right Left Right B A`.
+- It supports Konami codes, a.k.a. cheatcode shortcuts, like `Up Up Down Down Left Right Left Right B A`.
 
 ## Shortcut Syntax
 
@@ -74,7 +74,7 @@ shortcuts.register ( 'Ctrl+F', event => { // Simple modifier+trigger shortcut
 });
 
 shortcuts.register ( 'Ctrl+K Ctrl+F', event => { // Advanced sequence shortcut
-  console.log ( 'Handling CtrlK Ctrl+F' );
+  console.log ( 'Handling Ctrl+K Ctrl+F' );
   return true;
 });
 
@@ -91,7 +91,7 @@ shortcuts.register ( 'CmdOrCtrl+ClickRight', event => { // Advanced mixed keyboa
 // Let's register a Konami code, which basically is not affected by other registered shortcuts
 
 shortcuts.register ( 'Up Up Down Down Left Right Left Right B A', event => { // A Konami code
-  console.log ( 'Secret shortcut truggered 🚀' );
+  console.log ( 'Secret shortcut triggered 🚀' );
 }, { konami: true } ); // Registering it as a Konami code
 
 // Let's register a shortcut but then dispose of it
