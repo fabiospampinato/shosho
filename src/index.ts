@@ -30,9 +30,10 @@ const chord2ids = ( chord: string ): number[] => {
 const event2ids = ( event: Event ): number[] => { // Returning all possible detected ids, to support every scenario
   if ( event instanceof KeyboardEvent ) {
     const codeId = CODE2ID[event.code] || 0;
-    const keyId = KEY2ID[event.key] || 0;
-    const whichId = WHICH2ID[event.which] || 0;
-    return [codeId, keyId, whichId];
+    if ( codeId ) return [codeId];
+    const keyId = codeId ? 0 : KEY2ID[event.key] || 0;
+    const whichId = codeId ? 0 : WHICH2ID[event.which] || 0;
+    return [keyId, whichId];
   } else if ( event instanceof MouseEvent ) {
     return [MOUSE2ID[event.button] || 0];
   } else {
