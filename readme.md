@@ -1,6 +1,6 @@
 # ShoSho
 
-A modern and powerful shortcuts managment library.
+A modern and powerful shortcuts management library.
 
 ## Features
 
