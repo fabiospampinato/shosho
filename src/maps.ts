@@ -266,6 +266,22 @@ const CODE2ID = <const> {
   ScrollLock
 };
 
+const CODE_RISKY2ID = <const> {
+  /* PUNCTUATION */
+  Backquote,
+  Backslash,
+  BracketLeft,
+  BracketRight,
+  Comma,
+  Equal,
+  IntlBackslash,
+  Minus,
+  Period,
+  Quote,
+  Semicolon,
+  Slash
+};
+
 const KEY2ID = <const> {
   /* DIGITS */
   '0': Digit0,
@@ -339,7 +355,7 @@ const KEY2ID = <const> {
   ']': BracketRight,
   ',': Comma,
   '=': Equal,
-  '-' : Minus,
+  '-': Minus,
   '.': Period,
   '\'': Quote,
   ';': Semicolon,
@@ -504,7 +520,7 @@ const NAME2ID = <const> {
   scrolllock: ScrollLock
 };
 
-const WHICH2ID = {
+const WHICH2ID = <const> {
   /* DIGITS */
   48: Digit0,
   49: Digit1,
@@ -569,9 +585,43 @@ const WHICH2ID = {
   119: KeyW,
   120: KeyX,
   121: KeyY,
-  122: KeyZ
+  122: KeyZ,
+  /* PUNCTUATION KEYS */
+  96: Backquote,
+  92: Backslash,
+  91: BracketLeft,
+  93: BracketRight,
+  44: Comma,
+  61: Equal,
+  45: Minus,
+  46: Period,
+  39: Quote,
+  59: Semicolon,
+  47: Slash,
+  /* OTHER PUNCTUATION KEYS */
+  38: Ampersand,
+  42: Asterisk,
+  64: At,
+  123: BraceLeft,
+  125: BraceRight,
+  94: Caret,
+  58: Colon,
+  36: Dollar,
+  34: DoubleQuote,
+  33: ExclamationMark,
+  62: GreaterThan,
+  35: Hash,
+  60: LessThan,
+  40: ParenthesisLeft,
+  41: ParenthesisRight,
+  37: Percent,
+  124: Pipe,
+  43: Plus,
+  63: QuestionMark,
+  126: Tilde,
+  95: Underscore
 };
 
 /* EXPORT */
 
-export {CODE2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID};
+export {CODE2ID, CODE_RISKY2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID};

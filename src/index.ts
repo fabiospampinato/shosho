@@ -3,7 +3,7 @@
 
 import {TRIGGER_BITMASK} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
-import {CODE2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID} from './maps';
+import {CODE2ID, CODE_RISKY2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID} from './maps';
 import {attempt, castArray, enumerate, first, isString, nope, or, uniq, yep} from './utils';
 import type {Checker, Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options} from './types';
 
@@ -31,9 +31,10 @@ const event2ids = ( event: Event ): number[] => { // Returning all possible dete
   if ( event instanceof KeyboardEvent ) {
     const codeId = CODE2ID[event.code] || 0;
     if ( codeId ) return [codeId];
-    const keyId = codeId ? 0 : KEY2ID[event.key] || 0;
-    const whichId = codeId ? 0 : WHICH2ID[event.which] || 0;
-    return [keyId, whichId];
+    const keyId = KEY2ID[event.key] || 0;
+    const whichId = WHICH2ID[event.which] || 0;
+    const codeRiskyId = CODE_RISKY2ID[event.code] || 0;
+    return [keyId, whichId, codeRiskyId];
   } else if ( event instanceof MouseEvent ) {
     return [MOUSE2ID[event.button] || 0];
   } else {
