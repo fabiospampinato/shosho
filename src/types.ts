@@ -10,7 +10,7 @@ type Disposer = {
 };
 
 type Handler = {
-  ( event?: KeyboardEvent | MouseEvent ): boolean | void
+  ( event?: Event ): boolean | void
 };
 
 type ChordNode = {

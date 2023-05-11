@@ -111,7 +111,7 @@ class ShoSho {
     this.chords[index] |= id;
     this.chordsKonami[indexKonami] |= id;
 
-    const handled = attempt ( () => this.trigger ( this.chords ), false );
+    const handled = attempt ( () => this.trigger ( this.chords, event ), false );
     const triggered = !!id2trigger ( this.chords[index] );
 
     if ( handled ) {
@@ -237,7 +237,7 @@ class ShoSho {
 
   };
 
-  trigger = ( shortcut: string | number | number[], event?: KeyboardEvent | MouseEvent ) : boolean => {
+  trigger = ( shortcut: string | number | number[], event?: Event ) : boolean => {
 
     const chords = isString ( shortcut ) ? first ( shortcut2ids ( shortcut ) ) : castArray ( shortcut );
     const chordsKonami = this.chordsKonami; //TODO: Ugly, maybe there should just be two trigger functions, write this better
