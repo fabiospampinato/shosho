@@ -11,6 +11,7 @@
     "clean": "tsex clean",
     "compile": "tsex compile",
     "compile:watch": "tsex compile --watch",
+    "demo": "vite demo",
     "test": "tsex test",
     "test:watch": "tsex test --watch",
     "prepublishOnly": "tsex prepare"
