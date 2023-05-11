@@ -64,6 +64,18 @@ const isArray = ( value: unknown ): value is unknown[] => {
 
 };
 
+const isEmpty = ( value: Record<any, unknown> ): boolean => {
+
+  for ( const prop in value ) {
+
+    return false;
+
+  }
+
+  return true;
+
+};
+
 const isMac = (): boolean => {
 
   if ( typeof navigator !== 'object' ) return false;
@@ -104,4 +116,4 @@ const sum = ( values: number[] ): number => {
 
 /* EXPORT */
 
-export {attempt, castArray, enumerate, first, isArray, isMac, isString, last, nope, or, sum};
+export {attempt, castArray, enumerate, first, isArray, isEmpty, isMac, isString, last, nope, or, sum};

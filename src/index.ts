@@ -4,7 +4,7 @@
 import {MODIFIER_BITMASK, TRIGGER_BITMASK} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
 import {CHAR2ID, CODE2ID, KEY2ID, MOUSE2ID} from './maps';
-import {attempt, castArray, enumerate, first, isString, nope, or} from './utils';
+import {attempt, castArray, enumerate, first, isEmpty, isString, nope, or} from './utils';
 import type {Disposer, Handler, ChordNode, HandlerNode, Options} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
@@ -47,7 +47,6 @@ const event2id = ( event: Event ): number => {
 //TODO: Support character-based shortcut triggering
 //TODO: Alternatively, though less correct, rewrite some character-based shortcuts when registering them
 //TODO: Support konami codes, by having a ~never-resetting chords array for them
-//TODO: Trim chords a tsome point
 //TODO: Support recording shortcuts
 //TODO: Support deleting shortcuts with a filter, without the disposer function
 
@@ -57,6 +56,7 @@ class ShoSho {
 
   private active: boolean;
   private chords: number[];
+  private depth: number;
   private options: Options;
 
   private tree: ChordNode = {
@@ -72,6 +72,7 @@ class ShoSho {
 
     this.active = false;
     this.chords = [0];
+    this.depth = 0;
     this.options = options;
 
   }
@@ -101,6 +102,12 @@ class ShoSho {
 
     }
 
+    if ( this.chords.length > this.depth ) {
+
+      this.chords = this.chords.slice ( - ( this.depth - 1 ) );
+
+    }
+
   };
 
   private onUp = ( event: Event ): void => {
@@ -125,6 +132,7 @@ class ShoSho {
       for ( const chords of chordses ) {
 
         let node = this.tree;
+        let depth = 0;
 
         for ( const chord of chords ) {
 
@@ -135,7 +143,11 @@ class ShoSho {
             }
           };
 
+          depth += 1;
+
         }
+
+        this.depth = Math.max ( this.depth, depth );
 
         const handlers = node.handlers;
 
