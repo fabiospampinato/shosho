@@ -1,27 +1,13 @@
 
 /* IMPORT */
 
-import {MODIFIER_BITMASK, TRIGGER_BITMASK} from './constants';
+import {TRIGGER_BITMASK} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
-import {CHAR2ID, CODE2ID, KEY2ID, MOUSE2ID} from './maps';
-import {attempt, castArray, enumerate, escapeRe, first, isString, nope, or, yep} from './utils';
+import {CODE2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID} from './maps';
+import {attempt, castArray, enumerate, first, isString, nope, or, yep} from './utils';
 import type {Checker, Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
-
-const normalize = (() => { //TODO: This isn't always correct, the list of chords should be forked instead
-  const digits = { '!': '1', '@': '2', '#': '3', '$': '4', '%': '5', '^': '6', '&': '7', '*': '8', '(': '9', ')': '0' };
-  const punctuation = { '_': '-', '{': '[', '}': ']', '|': '\\', ':': ';', '"': "'", '<': ',', '>': '.', '?': '/', '~': '`' };
-  const replacements = { ...digits, ...punctuation };
-  const re = new RegExp ( `[${Object.keys ( replacements ).map ( escapeRe ).join ( '' )}]`, 'g' );
-  return ( shortcut: string ): string => {
-    return shortcut.replace ( re, char => replacements[char] );
-  };
-})();
-
-const id2modifier = ( id: number ): number => {
-  return ( id & MODIFIER_BITMASK );
-};
 
 const id2trigger = ( id: number ): number => {
   return ( id & TRIGGER_BITMASK );
@@ -36,14 +22,17 @@ const shortcut2ids = ( shortcut: string ): number[][] => {
 
 const chord2ids = ( chord: string ): number[] => {
   const keys = chord.replace ( PLUSES_RE, '+Plus' ).toLowerCase ().split ( '+' );
-  const parts = keys.map<number | number[]> ( key => KEY2ID[key] || CHAR2ID[key] || 0 );
+  const parts = keys.map<number | number[]> ( key => NAME2ID[key] || 0 );
   const ids = enumerate ( parts ).map ( or );
   return ids;
 };
 
 const event2id = ( event: Event ): number => {
   if ( event instanceof KeyboardEvent ) {
-    return CODE2ID[event.code] || CHAR2ID[event.key] || 0;
+    const codeId = CODE2ID[event.code];
+    const keyId = KEY2ID[event.key];
+    const whichId = WHICH2ID[event.which];
+    return codeId || whichId || keyId || 0;
   } else if ( event instanceof MouseEvent ) {
     return MOUSE2ID[event.button] || 0;
   } else {
@@ -57,6 +46,9 @@ const event2id = ( event: Event ): number => {
 //TODO: Support character-based shortcut triggering
 //TODO: Support recording shortcuts
 //TODO: Support deleting shortcuts with a filter, without the disposer function
+//TODO: Make sure there's always an Event object passed to handlers
+//TODO: Check if the event got stopped
+//TODO: Maybe add a Never key, for when something unrecognized is used in a shortcut
 
 class ShoSho {
 
@@ -164,7 +156,7 @@ class ShoSho {
 
   register = ( shortcut: string | string[], handler: Handler, options: HandlerOptions = {} ): Disposer => {
 
-    const chordseses = castArray ( shortcut ).map ( normalize ).map ( shortcut2ids );
+    const chordseses = castArray ( shortcut ).map ( shortcut2ids );
     const nodes: HandlerNode[] = [];
     const konami = !!options.konami;
 

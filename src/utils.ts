@@ -52,18 +52,6 @@ const enumerate = ( parts: (number | number[])[] ): number[][] => { // Exhaustiv
 
 };
 
-const escapeRe = (() => {
-
-  const unescapedRe = /[\\^$.*+?()[\]{}|]/g;
-
-  return ( re: string ): string => {
-
-    return re.replace ( unescapedRe, char => `\\${char}` );
-
-  };
-
-})();
-
 const first = <T> ( values: T[] ): T | undefined => {
 
   return values[0];
@@ -73,18 +61,6 @@ const first = <T> ( values: T[] ): T | undefined => {
 const isArray = ( value: unknown ): value is unknown[] => {
 
   return Array.isArray ( value );
-
-};
-
-const isEmpty = ( value: Record<any, unknown> ): boolean => {
-
-  for ( const prop in value ) {
-
-    return false;
-
-  }
-
-  return true;
 
 };
 
@@ -120,12 +96,6 @@ const or = ( values: number[] ): number => {
 
 };
 
-const sum = ( values: number[] ): number => {
-
-  return values.reduce ( ( acc, value ) => acc + value, 0 );
-
-};
-
 const yep = (): true => {
 
   return true;
@@ -134,4 +104,4 @@ const yep = (): true => {
 
 /* EXPORT */
 
-export {attempt, castArray, enumerate, escapeRe, first, isArray, isEmpty, isMac, isString, last, nope, or, sum, yep};
+export {attempt, castArray, enumerate, first, isArray, isMac, isString, last, nope, or, yep};
