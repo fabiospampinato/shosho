@@ -96,6 +96,12 @@ const or = ( values: number[] ): number => {
 
 };
 
+const uniq = <T> ( values: T[] ): T[] => {
+
+  return Array.from ( new Set ( values ) );
+
+};
+
 const yep = (): true => {
 
   return true;
@@ -104,4 +110,4 @@ const yep = (): true => {
 
 /* EXPORT */
 
-export {attempt, castArray, enumerate, first, isArray, isMac, isString, last, nope, or, yep};
+export {attempt, castArray, enumerate, first, isArray, isMac, isString, last, nope, or, uniq, yep};

@@ -27,16 +27,16 @@ const chord2ids = ( chord: string ): number[] => {
   return ids;
 };
 
-const event2id = ( event: Event ): number => {
+const event2ids = ( event: Event ): number[] => { // Returning all possible detected ids, to support every scenario
   if ( event instanceof KeyboardEvent ) {
-    const codeId = CODE2ID[event.code];
-    const keyId = KEY2ID[event.key];
-    const whichId = WHICH2ID[event.which];
-    return codeId || whichId || keyId || 0;
+    const codeId = CODE2ID[event.code] || 0;
+    const keyId = KEY2ID[event.key] || 0;
+    const whichId = WHICH2ID[event.which] || 0;
+    return [codeId, keyId, whichId];
   } else if ( event instanceof MouseEvent ) {
-    return MOUSE2ID[event.button] || 0;
+    return [MOUSE2ID[event.button] || 0];
   } else {
-    return 0;
+    return [0];
   }
 };
 
@@ -98,42 +98,55 @@ class ShoSho {
 
     const index = this.chords.length - 1;
     const indexKonami = this.chordsKonami.length - 1;
-    const id = event2id ( event );
+    const chord = this.chords[index];
+    const chordKonami = this.chordsKonami[indexKonami];
+    const ids = event2ids ( event );
 
-    this.chords[index] |= id;
-    this.chordsKonami[indexKonami] |= id;
+    for ( let i = 0, l = ids.length; i < l; i++ ) {
 
-    const handled = attempt ( () => this.trigger ( this.chords, event ), false );
-    const triggered = !!id2trigger ( this.chords[index] );
+      const id = ids[i];
 
-    if ( handled ) {
+      if ( !id ) continue;
 
-      this.chords = triggered ? [this.chords[index] &~ id] : [0];
+      this.chords[index] = chord | id;
+      this.chordsKonami[indexKonami] = chordKonami | id;
 
-      event.preventDefault ();
-      event.stopImmediatePropagation ();
+      const handled = attempt ( () => this.trigger ( this.chords, event ), false );
+      const triggered = !!id2trigger ( this.chords[index] );
+      const isLast = handled || ( i === l - 1 );
 
-    } else if ( triggered ) {
+      if ( !isLast ) continue;
 
-      this.chords.push ( this.chords[index] &~ id );
+      if ( handled ) {
 
-    }
+        this.chords = triggered ? [this.chords[index] &~ id] : [0];
 
-    if ( triggered ) {
+        event.preventDefault ();
+        event.stopImmediatePropagation ();
 
-      this.chordsKonami.push ( this.chordsKonami[indexKonami] &~ id );
+      } else if ( triggered ) {
 
-    }
+        this.chords.push ( this.chords[index] &~ id );
 
-    if ( this.chords.length > this.depth ) {
+      }
 
-      this.chords = this.chords.slice ( - this.depth );
+      if ( triggered ) {
 
-    }
+        this.chordsKonami.push ( this.chordsKonami[indexKonami] &~ id );
 
-    if ( this.chordsKonami.length > this.depthKonami ) {
+      }
 
-      this.chordsKonami = this.chordsKonami.slice ( - this.depthKonami );
+      if ( this.chords.length > this.depth ) {
+
+        this.chords = this.chords.slice ( - this.depth );
+
+      }
+
+      if ( this.chordsKonami.length > this.depthKonami ) {
+
+        this.chordsKonami = this.chordsKonami.slice ( - this.depthKonami );
+
+      }
 
     }
 
@@ -145,7 +158,7 @@ class ShoSho {
 
     const index = this.chords.length - 1;
     const indexKonami = this.chordsKonami.length - 1;
-    const id = event2id ( event );
+    const id = or ( event2ids ( event ) );
 
     this.chords[index] &=~ id;
     this.chordsKonami[indexKonami] &=~ id;
