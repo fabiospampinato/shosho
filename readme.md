@@ -4,7 +4,7 @@ A modern and powerful shortcuts management library.
 
 ## Features
 
-- It is largely built on top of [`KeyboardEvent#code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code), for great compatibility across browsers, platforms, languages and layouts.
+- It is largely built on top of [`KeyboardEvent#code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code) and [`KeyboardEvent#key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key), for great compatibility across browsers, platforms, languages and layouts.
 - It is _fast_. Almost always this library will do `O(1)` registrations, `O(1)` disposals, `O(1)` lookups and `O(1)` resetting.
 - It supports ~100 keyboard keys, including function keys and numpad keys.
 - It supports mouse buttons too, which can be mixed in shortcts with keyboard keys, like `Ctrl+ClickLeft`.
@@ -37,7 +37,7 @@ Please note that:
 - ℹ️ Shortcuts are case insensitive.
 - ℹ️ Keys in a single shortcut must be joined by a plus sign (e.g. <kbd>Ctrl+A</kbd>).
 - ℹ️ Sequences of shortcuts must be joined by a space (e.g. <kbd>Ctrl+K Ctrl+B</kbd>).
-- ⚠️ Punctuation keys should be avoided when possible, as they are currently supported in a way that can use differences between layouts.
+- ⚠️ Punctuation keys should be avoided when possible, especially when using in combination with Shift/Alt, as they may less to somewhat different results across different layouts.
 
 ## Install
 

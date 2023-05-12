@@ -203,6 +203,10 @@ shortcuts.register ( 'Shift+8', nope ( 'Shift+8' ) );
 shortcuts.register ( 'Shift+9', nope ( 'Shift+9' ) );
 shortcuts.register ( 'Shift+0', nope ( 'Shift+0' ) );
 
+shortcuts.register ( 'Shift+A', nope ( 'Shift+A' ) );
+shortcuts.register ( 'Shift+B', nope ( 'Shift+B' ) );
+shortcuts.register ( 'Shift+C', nope ( 'Shift+C' ) );
+
 shortcuts.register ( 'ClickLeft', nope ( 'ClickLeft' ) );
 shortcuts.register ( 'ClickRight', nope ( 'ClickRight' ) );
 shortcuts.register ( 'ClickMiddle', nope ( 'ClickMiddle' ) );
@@ -227,6 +231,9 @@ shortcuts.register ( 'Cmd+K Alt+C', yep ( 'Cmd+K Alt+C' ) );
 shortcuts.register ( 'Shift+ClickLeft' , yep ( 'Shift+ClickLeft' ) );
 shortcuts.register ( 'Cmd+ClickMiddle' , yep ( 'Cmd+ClickMiddle' ) );
 shortcuts.register ( 'Alt+ClickLeft Cmd+ClickMiddle' , yep ( 'Alt+ClickLeft Cmd+ClickMiddle' ) );
+
+shortcuts.register ( 'CmdLeft+CmdRight', yep ( 'CmdLeft+CmdRight' ) );
+// shortcuts.register ( 'CmdLeft+CmdRight AltLeft+AltRight', yep ( 'CmdLeft+CmdRight AltLeft+AltRight' ) ); //TODO It'd be cool to support this too
 
 shortcuts.register ( 'Up Up Down Down Left Right Left Right B A', yep ( 'Up Up Down Down Left Right Left Right B A 🚀' ), { konami: true } );
 
