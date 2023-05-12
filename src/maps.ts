@@ -6,15 +6,15 @@ import {isMac} from './utils';
 /* MODIFIERS */
 
 const AltLeft = 1 << 8;
-const AltRight = 2 << 8;
-const ControlLeft = 3 << 8;
-const ControlRight = 4 << 8;
-const MetaLeft = 5 << 8;
-const MetaRight = 6 << 8;
-const OSLeft = 5 << 8;
-const OSRight = 6 << 8;
-const ShiftLeft = 7 << 8;
-const ShiftRight = 8 << 8;
+const AltRight = 1 << 9;
+const ControlLeft = 1 << 10;
+const ControlRight = 1 << 11;
+const MetaLeft = 1 << 12;
+const MetaRight = 1 << 13;
+const OSLeft = 1 << 12;
+const OSRight = 1 << 13;
+const ShiftLeft = 1 << 14;
+const ShiftRight = 1 << 15;
 
 /* DIGITS */
 
