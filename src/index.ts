@@ -4,7 +4,7 @@
 import {TRIGGER_BITMASK} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
 import {CODE2ID, CODE_RISKY2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID} from './maps';
-import {attempt, castArray, enumerate, first, isString, nope, or, uniq, yep} from './utils';
+import {attempt, castArray, enumerate, first, isString, nope, or, uniq, without, yep} from './utils';
 import type {Checker, Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
@@ -102,13 +102,11 @@ class ShoSho {
     const indexKonami = this.chordsKonami.length - 1;
     const chord = this.chords[index];
     const chordKonami = this.chordsKonami[indexKonami];
-    const ids = uniq ( event2ids ( event ) );
+    const ids = without ( uniq ( event2ids ( event ) ), 0 );
 
     for ( let i = 0, l = ids.length; i < l; i++ ) {
 
       const id = ids[i];
-
-      if ( !id ) continue;
 
       this.chords[index] = chord | id;
       this.chordsKonami[indexKonami] = chordKonami | id;

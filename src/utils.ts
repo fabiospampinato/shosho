@@ -102,6 +102,12 @@ const uniq = <T> ( values: T[] ): T[] => {
 
 };
 
+const without = <T> ( values: T[], except: T ): T[] => {
+
+  return values.filter ( value => value !== except );
+
+};
+
 const yep = (): true => {
 
   return true;
@@ -110,4 +116,4 @@ const yep = (): true => {
 
 /* EXPORT */
 
-export {attempt, castArray, enumerate, first, isArray, isMac, isString, last, nope, or, uniq, yep};
+export {attempt, castArray, enumerate, first, isArray, isMac, isString, last, nope, or, uniq, without, yep};
