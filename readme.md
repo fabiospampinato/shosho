@@ -37,7 +37,7 @@ Please note that:
 - ℹ️ Shortcuts are case insensitive.
 - ℹ️ Keys in a single shortcut must be joined by a plus sign (e.g. <kbd>Ctrl+A</kbd>).
 - ℹ️ Sequences of shortcuts must be joined by a space (e.g. <kbd>Ctrl+K Ctrl+B</kbd>).
-- ⚠️ Punctuation keys should be avoided when possible, especially when using in combination with Shift/Alt, as they may less to somewhat different results across different layouts.
+- ⚠️ Punctuation keys should be avoided when possible, especially when used in combination with Shift/Alt, as they may less to somewhat different results across different layouts.
 
 ## Install
 
