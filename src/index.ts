@@ -51,6 +51,7 @@ const event2ids = ( event: Event ): number[] => { // Returning all possible dete
 //TODO: Make sure there's always an Event object passed to handlers
 //TODO: Check if the event got stopped
 //TODO: Maybe add a Never key, for when something unrecognized is used in a shortcut
+//TODO: Support multi-trigger shortcuts (like Left+Right)
 
 class ShoSho {
 

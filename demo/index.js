@@ -273,6 +273,13 @@ shortcuts.register ( 'CmdLeft+CmdRight', yep ( 'CmdLeft+CmdRight' ) );
 
 shortcuts.register ( 'Up Up Down Down Left Right Left Right B A', yep ( 'Up Up Down Down Left Right Left Right B A 🚀' ), { konami: true } );
 
+// shortcuts.register ( 'Left+Up', nope ( 'Left+Up' ) );
+// shortcuts.register ( 'Left+Down', nope ( 'Left+Down' ) );
+// shortcuts.register ( 'Left+Right', nope ( 'Left+Right' ) );
+// shortcuts.register ( 'Up+Down', nope ( 'Up+Down' ) );
+// shortcuts.register ( 'Up+Right', nope ( 'Up+Right' ) );
+// shortcuts.register ( 'Down+Right', nope ( 'Down+Right' ) );
+
 shortcuts.start ();
 
 // setTimeout ( () => {
