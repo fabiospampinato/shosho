@@ -95,6 +95,16 @@ class ShoSho {
 
   /* PRIVATE API */
 
+  private onBlur = (): void => { // If the tab loses focus we might not receive keyup/mouseup events
+
+    const index = this.chords.length - 1;
+    const indexKonami = this.chordsKonami.length - 1;
+
+    this.chords[index] = 0;
+    this.chordsKonami[indexKonami] = 0;
+
+  };
+
   private onDown = ( event: Event ): void => {
 
     if ( !this.shouldHandle ( event ) ) return;
@@ -332,6 +342,8 @@ class ShoSho {
     root.addEventListener ( 'auxclick', this.onDown, { capture } );
     root.addEventListener ( 'contextmenu', this.onDown, { capture } );
 
+    window.addEventListener ( 'blur', this.onBlur );
+
   };
 
   stop = (): void => {
@@ -348,6 +360,8 @@ class ShoSho {
     root.removeEventListener ( 'click', this.onDown, { capture } );
     root.removeEventListener ( 'auxclick', this.onDown, { capture } );
     root.removeEventListener ( 'contextmenu', this.onDown, { capture } );
+
+    window.removeEventListener ( 'blur', this.onBlur );
 
   };
 
