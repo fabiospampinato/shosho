@@ -64,11 +64,23 @@ const isArray = ( value: unknown ): value is unknown[] => {
 
 };
 
+const isKeyboardEvent = ( value: unknown ): value is KeyboardEvent => {
+
+  return value instanceof KeyboardEvent;
+
+};
+
 const isMac = (): boolean => {
 
   if ( typeof navigator !== 'object' ) return false;
 
   return /mac|ipod|iphone|ipad/i.test ( navigator.platform );
+
+};
+
+const isMouseEvent = ( value: unknown ): value is MouseEvent => {
+
+  return value instanceof MouseEvent;
 
 };
 
@@ -116,4 +128,4 @@ const yep = (): true => {
 
 /* EXPORT */
 
-export {attempt, castArray, enumerate, first, isArray, isMac, isString, last, nope, or, uniq, without, yep};
+export {attempt, castArray, enumerate, first, isArray, isKeyboardEvent, isMac, isMouseEvent, isString, last, nope, or, uniq, without, yep};

@@ -4,7 +4,7 @@
 import {TRIGGER_BITMASK} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
 import {CODE2ID, CODE_RISKY2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID} from './maps';
-import {attempt, castArray, enumerate, first, isString, nope, or, uniq, without, yep} from './utils';
+import {attempt, castArray, enumerate, first, isKeyboardEvent, isMouseEvent, isString, nope, or, uniq, without, yep} from './utils';
 import type {Checker, Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
@@ -28,14 +28,14 @@ const chord2ids = ( chord: string ): number[] => {
 };
 
 const event2ids = ( event: Event ): number[] => { // Returning all possible detected ids, to support every scenario
-  if ( event instanceof KeyboardEvent ) {
+  if ( isKeyboardEvent ( event ) ) {
     const codeId = CODE2ID[event.code] || 0;
     if ( codeId ) return [codeId];
     const keyId = KEY2ID[event.key] || 0;
     const whichId = WHICH2ID[event.which] || 0;
     const codeRiskyId = CODE_RISKY2ID[event.code] || 0;
     return [keyId, whichId, codeRiskyId];
-  } else if ( event instanceof MouseEvent ) {
+  } else if ( isMouseEvent ( event ) ) {
     return [MOUSE2ID[event.button] || 0];
   } else {
     return [0];
@@ -105,9 +105,34 @@ class ShoSho {
 
   };
 
+  private onNormalize = ( event: Event ): void => { // We might be missing some keyup/mouseup events, safer to check again what the state of modifiers is
+
+    if ( !isKeyboardEvent ( event ) && !isMouseEvent ( event ) ) return;
+
+    const {altKey, ctrlKey, metaKey, shiftKey} = event;
+
+    const index = this.chords.length - 1;
+    const indexKonami = this.chordsKonami.length - 1;
+
+    let id = 0;
+
+    if ( !altKey ) id |= CODE2ID.AltLeft | CODE2ID.AltRight;
+    if ( !ctrlKey ) id |= CODE2ID.ControlLeft | CODE2ID.ControlRight;
+    if ( !metaKey ) id |= CODE2ID.MetaLeft | CODE2ID.MetaRight;
+    if ( !shiftKey ) id |= CODE2ID.ShiftLeft | CODE2ID.ShiftRight;
+
+    if ( !id ) return;
+
+    this.chords[index] &=~ id;
+    this.chordsKonami[indexKonami] &=~ id;
+
+  };
+
   private onDown = ( event: Event ): void => {
 
     if ( !this.shouldHandle ( event ) ) return;
+
+    this.onNormalize ( event );
 
     const index = this.chords.length - 1;
     const indexKonami = this.chordsKonami.length - 1;
