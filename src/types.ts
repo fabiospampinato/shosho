@@ -14,7 +14,7 @@ type Handler = {
 };
 
 type ChordNode = {
-  children: Partial<Record<number, ChordNode>>,
+  children: Partial<Record<string, ChordNode>>,
   handlers: HandlerNode // Pointing to the last item in the linked list
 };
 

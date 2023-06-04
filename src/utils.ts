@@ -21,14 +21,14 @@ const castArray = <T> ( value: T | T[] ): T[] => {
 
 };
 
-const enumerate = ( parts: (number | number[])[] ): number[][] => { // Exhaustively listing all possible paths from the start to the end
+const enumerate = ( parts: (bigint | bigint[])[] ): bigint[][] => { // Exhaustively listing all possible paths from the start to the end
 
   if ( !parts.length ) return [];
 
   const normalized = parts.map ( castArray );
   const heads = normalized[0];
   const tails = enumerate ( normalized.slice ( 1 ) );
-  const values: number[][] = [];
+  const values: bigint[][] = [];
 
   for ( const head of heads ) {
 
@@ -102,9 +102,9 @@ const nope = (): false => {
 
 };
 
-const or = ( values: number[] ): number => {
+const or = ( values: bigint[] ): bigint => {
 
-  return values.reduce ( ( acc, value ) => acc | value, 0 );
+  return values.reduce ( ( acc, value ) => acc | value, 0n );
 
 };
 

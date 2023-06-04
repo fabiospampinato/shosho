@@ -280,6 +280,13 @@ shortcuts.register ( 'Up Up Down Down Left Right Left Right B A', yep ( 'Up Up D
 // shortcuts.register ( 'Up+Right', nope ( 'Up+Right' ) );
 // shortcuts.register ( 'Down+Right', nope ( 'Down+Right' ) );
 
+shortcuts.register ( 'Left+Up', yep ( 'Left+Up' ) );
+shortcuts.register ( 'Right+Up', yep ( 'Right+Up' ) );
+shortcuts.register ( 'Left+Down', yep ( 'Left+Down' ) );
+shortcuts.register ( 'Right+Down', yep ( 'Right+Down' ) );
+shortcuts.register ( 'Left+Right', yep ( 'Left+Right' ) );
+shortcuts.register ( 'Up+Down', yep ( 'Up+Down' ) );
+
 shortcuts.start ();
 
 // setTimeout ( () => {

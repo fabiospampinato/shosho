@@ -5,185 +5,185 @@ import {isMac} from './utils';
 
 /* MODIFIERS */
 
-const AltLeft = 1 << 8;
-const AltRight = 1 << 9;
-const ControlLeft = 1 << 10;
-const ControlRight = 1 << 11;
-const MetaLeft = 1 << 12;
-const MetaRight = 1 << 13;
-const OSLeft = 1 << 12;
-const OSRight = 1 << 13;
-const ShiftLeft = 1 << 14;
-const ShiftRight = 1 << 15;
+const AltLeft = 1n << 0n;
+const AltRight = 1n << 1n;
+const ControlLeft = 1n << 2n;
+const ControlRight = 1n << 3n;
+const MetaLeft = 1n << 4n;
+const MetaRight = 1n << 5n;
+const OSLeft = 1n << 4n;
+const OSRight = 1n << 5n;
+const ShiftLeft = 1n << 6n;
+const ShiftRight = 1n << 7n;
 
 /* DIGITS */
 
-const Digit0 = 1;
-const Digit1 = 2;
-const Digit2 = 3;
-const Digit3 = 4;
-const Digit4 = 5;
-const Digit5 = 6;
-const Digit6 = 7;
-const Digit7 = 8;
-const Digit8 = 9;
-const Digit9 = 10;
+const Digit0 = 1n << 9n;
+const Digit1 = 1n << 10n;
+const Digit2 = 1n << 11n;
+const Digit3 = 1n << 12n;
+const Digit4 = 1n << 13n;
+const Digit5 = 1n << 14n;
+const Digit6 = 1n << 15n;
+const Digit7 = 1n << 16n;
+const Digit8 = 1n << 17n;
+const Digit9 = 1n << 18n;
 
 /* ALPHABET */
 
-const KeyA = 11;
-const KeyB = 12;
-const KeyC = 13;
-const KeyD = 14;
-const KeyE = 15;
-const KeyF = 16;
-const KeyG = 17;
-const KeyH = 18;
-const KeyI = 19;
-const KeyJ = 20;
-const KeyK = 21;
-const KeyL = 22;
-const KeyM = 23;
-const KeyN = 24;
-const KeyO = 25;
-const KeyP = 26;
-const KeyQ = 27;
-const KeyR = 28;
-const KeyS = 29;
-const KeyT = 30;
-const KeyU = 31;
-const KeyV = 32;
-const KeyW = 33;
-const KeyX = 34;
-const KeyY = 35;
-const KeyZ = 36;
+const KeyA = 1n << 19n;
+const KeyB = 1n << 20n;
+const KeyC = 1n << 21n;
+const KeyD = 1n << 22n;
+const KeyE = 1n << 23n;
+const KeyF = 1n << 24n;
+const KeyG = 1n << 25n;
+const KeyH = 1n << 26n;
+const KeyI = 1n << 27n;
+const KeyJ = 1n << 28n;
+const KeyK = 1n << 29n;
+const KeyL = 1n << 30n;
+const KeyM = 1n << 31n;
+const KeyN = 1n << 32n;
+const KeyO = 1n << 33n;
+const KeyP = 1n << 34n;
+const KeyQ = 1n << 35n;
+const KeyR = 1n << 36n;
+const KeyS = 1n << 37n;
+const KeyT = 1n << 38n;
+const KeyU = 1n << 39n;
+const KeyV = 1n << 40n;
+const KeyW = 1n << 41n;
+const KeyX = 1n << 42n;
+const KeyY = 1n << 43n;
+const KeyZ = 1n << 44n;
 
 /* FUNCTION KEYS */
 
-const F1 = 37;
-const F2 = 38;
-const F3 = 39;
-const F4 = 40;
-const F5 = 41;
-const F6 = 42;
-const F7 = 43;
-const F8 = 44;
-const F9 = 45;
-const F10 = 46;
-const F11 = 47;
-const F12 = 48;
-const F13 = 49;
-const F14 = 50;
-const F15 = 51;
-const F16 = 52;
-const F17 = 53;
-const F18 = 54;
-const F19 = 55;
-const F20 = 56;
-const F21 = 57;
-const F22 = 58;
-const F23 = 59;
-const F24 = 60;
+const F1 = 1n << 45n;
+const F2 = 1n << 46n;
+const F3 = 1n << 47n;
+const F4 = 1n << 48n;
+const F5 = 1n << 49n;
+const F6 = 1n << 50n;
+const F7 = 1n << 51n;
+const F8 = 1n << 52n;
+const F9 = 1n << 53n;
+const F10 = 1n << 54n;
+const F11 = 1n << 55n;
+const F12 = 1n << 56n;
+const F13 = 1n << 57n;
+const F14 = 1n << 58n;
+const F15 = 1n << 59n;
+const F16 = 1n << 60n;
+const F17 = 1n << 61n;
+const F18 = 1n << 62n;
+const F19 = 1n << 63n;
+const F20 = 1n << 64n;
+const F21 = 1n << 65n;
+const F22 = 1n << 66n;
+const F23 = 1n << 67n;
+const F24 = 1n << 68n;
 
 /* NUMPAD DIGITS */
 
-const Numpad0 = 61;
-const Numpad1 = 62;
-const Numpad2 = 63;
-const Numpad3 = 64;
-const Numpad4 = 65;
-const Numpad5 = 66;
-const Numpad6 = 67;
-const Numpad7 = 68;
-const Numpad8 = 69;
-const Numpad9 = 70;
+const Numpad0 = 1n << 69n;
+const Numpad1 = 1n << 70n;
+const Numpad2 = 1n << 71n;
+const Numpad3 = 1n << 72n;
+const Numpad4 = 1n << 73n;
+const Numpad5 = 1n << 74n;
+const Numpad6 = 1n << 75n;
+const Numpad7 = 1n << 76n;
+const Numpad8 = 1n << 77n;
+const Numpad9 = 1n << 78n;
 
 /* NUMPAD OPERATORS */
 
-const NumpadAdd = 71;
-const NumpadComma = 72;
-const NumpadDecimal = 73;
-const NumpadDivide = 74;
-const NumpadEnter = 75;
-const NumpadEqual = 76;
-const NumpadMultiply = 77;
-const NumpadSubtract = 78;
+const NumpadAdd = 1n << 79n;
+const NumpadComma = 1n << 80n;
+const NumpadDecimal = 1n << 81n;
+const NumpadDivide = 1n << 82n;
+const NumpadEnter = 1n << 83n;
+const NumpadEqual = 1n << 84n;
+const NumpadMultiply = 1n << 85n;
+const NumpadSubtract = 1n << 86n;
 
 /* SPECIAL KEYS */
 
-const ArrowDown = 79;
-const ArrowLeft = 80;
-const ArrowRight = 81;
-const ArrowUp = 82;
-const Backspace = 83;
-const CapsLock = 84;
-const Delete = 85;
-const End = 86;
-const Enter = 87;
-const Escape = 88;
-const Home = 89;
-const Insert = 90;
-const PageDown = 91;
-const PageUp = 92;
-const Space = 93;
-const Tab = 94;
+const ArrowDown = 1n << 87n;
+const ArrowLeft = 1n << 88n;
+const ArrowRight = 1n << 89n;
+const ArrowUp = 1n << 90n;
+const Backspace = 1n << 91n;
+const CapsLock = 1n << 92n;
+const Delete = 1n << 93n;
+const End = 1n << 94n;
+const Enter = 1n << 95n;
+const Escape = 1n << 96n;
+const Home = 1n << 97n;
+const Insert = 1n << 98n;
+const PageDown = 1n << 99n;
+const PageUp = 1n << 100n;
+const Space = 1n << 101n;
+const Tab = 1n << 102n;
 
 /* PUNCTUATION KEYS */
 
-const Backquote = 95;
-const Backslash = 96;
-const BracketLeft = 97;
-const BracketRight = 98;
-const Comma = 99;
-const Equal = 100;
-const IntlBackslash = 101;
-const Minus = 102;
-const Period = 103;
-const Quote = 104;
-const Semicolon = 105;
-const Slash = 106;
+const Backquote = 1n << 103n;
+const Backslash = 1n << 104n;
+const BracketLeft = 1n << 105n;
+const BracketRight = 1n << 106n;
+const Comma = 1n << 107n;
+const Equal = 1n << 108n;
+const IntlBackslash = 1n << 109n;
+const Minus = 1n << 110n;
+const Period = 1n << 111n;
+const Quote = 1n << 112n;
+const Semicolon = 1n << 113n;
+const Slash = 1n << 114n;
 
 /* OTHER KEYS */
 
-const NumLock = 107;
-const ScrollLock = 108;
+const NumLock = 1n << 115n;
+const ScrollLock = 1n << 116n;
 
 /* CUSTOM KEYBOARD KEYS */
 
-const Ampersand = 109;
-const Asterisk = 110;
-const At = 111;
-const BraceLeft = 112;
-const BraceRight = 113;
-const Caret = 114;
-const Colon = 115;
-const Dollar = 116;
-const DoubleQuote = 117;
-const ExclamationMark = 118;
-const GreaterThan = 119;
-const Hash = 120;
-const LessThan = 121;
-const ParenthesisLeft = 122;
-const ParenthesisRight = 123;
-const Percent = 124;
-const Pipe = 125;
-const Plus = 126;
-const QuestionMark = 127;
-const Tilde = 128;
-const Underscore = 129;
+const Ampersand = 1n << 117n;
+const Asterisk = 1n << 118n;
+const At = 1n << 119n;
+const BraceLeft = 1n << 120n;
+const BraceRight = 1n << 121n;
+const Caret = 1n << 122n;
+const Colon = 1n << 123n;
+const Dollar = 1n << 124n;
+const DoubleQuote = 1n << 125n;
+const ExclamationMark = 1n << 126n;
+const GreaterThan = 1n << 127n;
+const Hash = 1n << 128n;
+const LessThan = 1n << 129n;
+const ParenthesisLeft = 1n << 130n;
+const ParenthesisRight = 1n << 131n;
+const Percent = 1n << 132n;
+const Pipe = 1n << 133n;
+const Plus = 1n << 134n;
+const QuestionMark = 1n << 135n;
+const Tilde = 1n << 136n;
+const Underscore = 1n << 137n;
 
 /* CUSTOM MOUSE KEYS */
 
-const Mouse0 = 130;
-const Mouse1 = 131;
-const Mouse2 = 132;
-const Mouse3 = 133;
-const Mouse4 = 134;
-const Mouse5 = 135;
-const Mouse6 = 136;
-const Mouse7 = 137;
-const Mouse8 = 138;
-const Mouse9 = 139;
+const Mouse0 = 1n << 138n;
+const Mouse1 = 1n << 139n;
+const Mouse2 = 1n << 140n;
+const Mouse3 = 1n << 141n;
+const Mouse4 = 1n << 142n;
+const Mouse5 = 1n << 143n;
+const Mouse6 = 1n << 144n;
+const Mouse7 = 1n << 145n;
+const Mouse8 = 1n << 146n;
+const Mouse9 = 1n << 147n;
 
 /* MAIN */
 

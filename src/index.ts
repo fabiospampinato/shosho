@@ -9,36 +9,36 @@ import type {Checker, Disposer, Handler, ChordNode, HandlerNode, HandlerOptions,
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
 
-const id2trigger = ( id: number ): number => {
+const id2trigger = ( id: bigint ): bigint => {
   return ( id & TRIGGER_BITMASK );
 };
 
-const shortcut2ids = ( shortcut: string ): number[][] => {
+const shortcut2ids = ( shortcut: string ): bigint[][] => {
   const chords = shortcut.trim ().split ( WHITESPACE_RE );
   const parts = chords.map ( chord2ids );
   const ids = enumerate ( parts );
   return ids;
 };
 
-const chord2ids = ( chord: string ): number[] => {
+const chord2ids = ( chord: string ): bigint[] => {
   const keys = chord.replace ( PLUSES_RE, '+Plus' ).toLowerCase ().split ( '+' );
-  const parts = keys.map<number | number[]> ( key => NAME2ID[key] || 0 );
+  const parts = keys.map<bigint | bigint[]> ( key => NAME2ID[key] || 0n );
   const ids = enumerate ( parts ).map ( or );
   return ids;
 };
 
-const event2ids = ( event: Event ): number[] => { // Returning all possible detected ids, to support every scenario
+const event2ids = ( event: Event ): bigint[] => { // Returning all possible detected ids, to support every scenario
   if ( isKeyboardEvent ( event ) ) {
-    const codeId = CODE2ID[event.code] || 0;
+    const codeId = CODE2ID[event.code] || 0n;
     if ( codeId ) return [codeId];
-    const keyId = KEY2ID[event.key] || 0;
-    const whichId = WHICH2ID[event.which] || 0;
-    const codeRiskyId = CODE_RISKY2ID[event.code] || 0;
+    const keyId = KEY2ID[event.key] || 0n;
+    const whichId = WHICH2ID[event.which] || 0n;
+    const codeRiskyId = CODE_RISKY2ID[event.code] || 0n;
     return [keyId, whichId, codeRiskyId];
   } else if ( isMouseEvent ( event ) ) {
-    return [MOUSE2ID[event.button] || 0];
+    return [MOUSE2ID[event.button] || 0n];
   } else {
-    return [0];
+    return [0n];
   }
 };
 
@@ -51,15 +51,14 @@ const event2ids = ( event: Event ): number[] => { // Returning all possible dete
 //TODO: Make sure there's always an Event object passed to handlers
 //TODO: Check if the event got stopped
 //TODO: Maybe add a Never key, for when something unrecognized is used in a shortcut
-//TODO: Support multi-trigger shortcuts (like Left+Right)
 
 class ShoSho {
 
   /* VARIABLES */
 
   private active: boolean;
-  private chords: number[];
-  private chordsKonami: number[];
+  private chords: bigint[];
+  private chordsKonami: bigint[];
   private depth: number;
   private depthKonami: number;
   private shouldHandle: Checker;
@@ -84,8 +83,8 @@ class ShoSho {
   constructor ( options: Options = {} ) {
 
     this.active = false;
-    this.chords = [0];
-    this.chordsKonami = [0];
+    this.chords = [0n];
+    this.chordsKonami = [0n];
     this.depth = 0;
     this.depthKonami = 0;
     this.shouldHandle = options.shouldHandleEvent || yep;
@@ -100,8 +99,8 @@ class ShoSho {
     const index = this.chords.length - 1;
     const indexKonami = this.chordsKonami.length - 1;
 
-    this.chords[index] = 0;
-    this.chordsKonami[indexKonami] = 0;
+    this.chords[index] = 0n;
+    this.chordsKonami[indexKonami] = 0n;
 
   };
 
@@ -114,7 +113,7 @@ class ShoSho {
     const index = this.chords.length - 1;
     const indexKonami = this.chordsKonami.length - 1;
 
-    let id = 0;
+    let id = 0n;
 
     if ( !altKey ) id |= CODE2ID.AltLeft | CODE2ID.AltRight;
     if ( !ctrlKey ) id |= CODE2ID.ControlLeft | CODE2ID.ControlRight;
@@ -138,7 +137,7 @@ class ShoSho {
     const indexKonami = this.chordsKonami.length - 1;
     const chord = this.chords[index];
     const chordKonami = this.chordsKonami[indexKonami];
-    const ids = without ( uniq ( event2ids ( event ) ), 0 );
+    const ids = without ( uniq ( event2ids ( event ) ), 0n );
 
     for ( let i = 0, l = ids.length; i < l; i++ ) {
 
@@ -155,7 +154,11 @@ class ShoSho {
 
       if ( handled ) {
 
-        this.chords = triggered ? [this.chords[index] &~ id] : [0];
+        if ( !triggered || isMouseEvent ( event ) ) {
+
+          this.chords = triggered ? [this.chords[index] &~ id] : [0n];
+
+        }
 
         event.preventDefault ();
         event.stopImmediatePropagation ();
@@ -222,7 +225,7 @@ class ShoSho {
 
         for ( const chord of chords ) {
 
-          node = node.children[chord] ||= {
+          node = node.children[String ( chord )] ||= {
             children: {},
             handlers: {
               handler: nope
@@ -280,7 +283,7 @@ class ShoSho {
 
   };
 
-  trigger = ( shortcut: string | number | number[], event?: Event ) : boolean => {
+  trigger = ( shortcut: string | bigint | bigint[], event?: Event ) : boolean => {
 
     const chords = isString ( shortcut ) ? first ( shortcut2ids ( shortcut ) ) : castArray ( shortcut );
     const chordsKonami = this.chordsKonami; //TODO: Ugly, maybe there should just be two trigger functions, write this better
@@ -297,7 +300,7 @@ class ShoSho {
 
         for ( const chord of slice ) {
 
-          node = node?.children[chord];
+          node = node?.children[String ( chord )];
 
         }
 
@@ -324,7 +327,7 @@ class ShoSho {
 
         for ( const chord of slice ) {
 
-          node = node?.children[chord];
+          node = node?.children[String ( chord )];
 
         }
 
