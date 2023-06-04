@@ -13,7 +13,7 @@ A modern and powerful shortcuts management library.
 - It supports common aliases for keys, like `Alt`/`Option`, or `Esc`/`Escape`.
 - It supports some character-based shortcuts, like `Shift+#`, rather than the equivalent key-based shortcut, which might be `Shift+3`.
 - It supports automatically using `Command` under macOS and `Control` elsewhere, by writing for example `CommandOrControl+F`.
-- It supports multi-trigger shortcuts, like `Up+Right` or `Down+Left`.
+- It supports multi-trigger shortcuts, like `Up+Right` or `Down+Left`, except when the `Meta` key is pressed, which is buggy in browsers.
 - It supports Konami codes, a.k.a. cheatcode shortcuts, like `Up Up Down Down Left Right Left Right B A`.
 
 ## Shortcut Syntax

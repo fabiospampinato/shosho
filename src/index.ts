@@ -163,7 +163,7 @@ class ShoSho {
 
         if ( handled ) {
 
-          if ( !triggered || isMouseEvent ( event ) ) {
+          if ( !triggered || isMouseEvent ( event ) || chord & CODE2ID.MetaLeft || chord & CODE2ID.MetaRight ) { // Meta keys are buggy, they will swallow keyup events for the trigger
 
             this.chords = triggered ? [this.chords[index] &~ id] : [0n];
 

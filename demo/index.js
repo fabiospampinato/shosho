@@ -287,6 +287,8 @@ shortcuts.register ( 'Up Up Down Down Left Right Left Right B A', yep ( 'Up Up D
 // shortcuts.register ( 'Up+Right', nope ( 'Up+Right' ) );
 // shortcuts.register ( 'Down+Right', nope ( 'Down+Right' ) );
 
+shortcuts.register ( 'Ctrl+Cmd+Right', yep ( 'Ctrl+Cmd+Right' ) );
+
 shortcuts.start ();
 
 // setTimeout ( () => {
