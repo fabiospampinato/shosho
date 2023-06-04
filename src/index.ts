@@ -1,7 +1,7 @@
 
 /* IMPORT */
 
-import {TRIGGER_BITMASK} from './constants';
+import {MODIFIER_BITMASK, TRIGGER_BITMASK} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
 import {CODE2ID, CODE_RISKY2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID} from './maps';
 import {attempt, castArray, enumerate, first, isKeyboardEvent, isMouseEvent, isString, nope, or, uniq, without, yep} from './utils';
@@ -137,57 +137,68 @@ class ShoSho {
     const indexKonami = this.chordsKonami.length - 1;
     const chord = this.chords[index];
     const chordKonami = this.chordsKonami[indexKonami];
+    const chordNoTrigger = chord & MODIFIER_BITMASK;
+    const chordKonamiNoTrigger = chordKonami & MODIFIER_BITMASK;
+    const chords = ( chord === chordNoTrigger ) ? [[chord, chordKonami]] : [[chord, chordKonami], [chordNoTrigger, chordKonamiNoTrigger]]; // Not being super strict about multi-key shortcuts here
     const ids = without ( uniq ( event2ids ( event ) ), 0n );
 
     for ( let i = 0, l = ids.length; i < l; i++ ) {
 
       const id = ids[i];
+      const isLastId = ( i === l - 1 );
 
-      this.chords[index] = chord | id;
-      this.chordsKonami[indexKonami] = chordKonami | id;
+      for ( let ci = 0, cl = chords.length; ci < cl; ci++ ) {
 
-      const handled = attempt ( () => this.trigger ( this.chords, event ), false );
-      const triggered = !!id2trigger ( this.chords[index] );
-      const isLast = handled || ( i === l - 1 );
+        const [chord, chordKonami] = chords[ci];
+        const isLastChord = ( ci === cl - 1 );
 
-      if ( !isLast ) continue;
+        this.chords[index] = chord | id;
+        this.chordsKonami[indexKonami] = chordKonami | id;
 
-      if ( handled ) {
+        const handled = attempt ( () => this.trigger ( this.chords, event ), false );
+        const triggered = !!id2trigger ( this.chords[index] );
+        const isLast = handled || ( isLastId && isLastChord );
 
-        if ( !triggered || isMouseEvent ( event ) ) {
+        if ( !isLast ) continue;
 
-          this.chords = triggered ? [this.chords[index] &~ id] : [0n];
+        if ( handled ) {
+
+          if ( !triggered || isMouseEvent ( event ) ) {
+
+            this.chords = triggered ? [this.chords[index] &~ id] : [0n];
+
+          }
+
+          event.preventDefault ();
+          event.stopImmediatePropagation ();
+
+        } else if ( triggered ) {
+
+          this.chords.push ( this.chords[index] &~ id );
 
         }
 
-        event.preventDefault ();
-        event.stopImmediatePropagation ();
+        if ( triggered ) {
 
-      } else if ( triggered ) {
+          this.chordsKonami.push ( this.chordsKonami[indexKonami] &~ id );
 
-        this.chords.push ( this.chords[index] &~ id );
+        }
 
-      }
+        if ( this.chords.length > this.depth ) {
 
-      if ( triggered ) {
+          this.chords = this.chords.slice ( - this.depth );
 
-        this.chordsKonami.push ( this.chordsKonami[indexKonami] &~ id );
+        }
 
-      }
+        if ( this.chordsKonami.length > this.depthKonami ) {
 
-      if ( this.chords.length > this.depth ) {
+          this.chordsKonami = this.chordsKonami.slice ( - this.depthKonami );
 
-        this.chords = this.chords.slice ( - this.depth );
+        }
 
-      }
-
-      if ( this.chordsKonami.length > this.depthKonami ) {
-
-        this.chordsKonami = this.chordsKonami.slice ( - this.depthKonami );
+        break;
 
       }
-
-      break;
 
     }
 

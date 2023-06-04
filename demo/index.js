@@ -106,6 +106,13 @@ shortcuts.register ( 'NumpadEqual', yep ( 'NumpadEqual' ) );
 shortcuts.register ( 'NumpadMultiply', yep ( 'NumpadMultiply' ) );
 shortcuts.register ( 'NumpadSubtract', yep ( 'NumpadSubtract' ) );
 
+shortcuts.register ( 'Left+Up', nope ( 'Left+Up' ) );
+shortcuts.register ( 'Right+Up', nope ( 'Right+Up' ) );
+shortcuts.register ( 'Left+Down', nope ( 'Left+Down' ) );
+shortcuts.register ( 'Right+Down', nope ( 'Right+Down' ) );
+shortcuts.register ( 'Left+Right', nope ( 'Left+Right' ) );
+shortcuts.register ( 'Up+Down', nope ( 'Up+Down' ) );
+
 shortcuts.register ( 'Down', yep ( 'ArrowDown' ) );
 shortcuts.register ( 'Left', yep ( 'ArrowLeft' ) );
 shortcuts.register ( 'Right', yep ( 'ArrowRight' ) );
@@ -279,13 +286,6 @@ shortcuts.register ( 'Up Up Down Down Left Right Left Right B A', yep ( 'Up Up D
 // shortcuts.register ( 'Up+Down', nope ( 'Up+Down' ) );
 // shortcuts.register ( 'Up+Right', nope ( 'Up+Right' ) );
 // shortcuts.register ( 'Down+Right', nope ( 'Down+Right' ) );
-
-shortcuts.register ( 'Left+Up', yep ( 'Left+Up' ) );
-shortcuts.register ( 'Right+Up', yep ( 'Right+Up' ) );
-shortcuts.register ( 'Left+Down', yep ( 'Left+Down' ) );
-shortcuts.register ( 'Right+Down', yep ( 'Right+Down' ) );
-shortcuts.register ( 'Left+Right', yep ( 'Left+Right' ) );
-shortcuts.register ( 'Up+Down', yep ( 'Up+Down' ) );
 
 shortcuts.start ();
 
