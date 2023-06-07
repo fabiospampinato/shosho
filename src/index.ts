@@ -1,9 +1,9 @@
 
 /* IMPORT */
 
-import {MODIFIER_BITMASK, TRIGGER_BITMASK} from './constants';
+import {MODIFIER_BITMASK, TRIGGER_BITMASK, UNSUPPORTED} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
-import {CODE2ID, CODE_RISKY2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID} from './maps';
+import {CODE2ID, CODE_RISKY2ID, KEY_UNSUPPORTED2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID} from './maps';
 import {attempt, castArray, enumerate, first, isKeyboardEvent, isMouseEvent, isString, nope, or, uniq, without, yep} from './utils';
 import type {Checker, Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options} from './types';
 
@@ -22,7 +22,7 @@ const shortcut2ids = ( shortcut: string ): bigint[][] => {
 
 const chord2ids = ( chord: string ): bigint[] => {
   const keys = chord.replace ( PLUSES_RE, '+Plus' ).toLowerCase ().split ( '+' );
-  const parts = keys.map<bigint | bigint[]> ( key => NAME2ID[key] || 0n );
+  const parts = keys.map<bigint | bigint[]> ( key => NAME2ID[key] || UNSUPPORTED );
   const ids = enumerate ( parts ).map ( or );
   return ids;
 };
@@ -33,7 +33,7 @@ const event2ids = ( event: Event ): bigint[] => { // Returning all possible dete
     if ( codeId ) return [codeId];
     const keyId = KEY2ID[event.key] || 0n;
     const whichId = WHICH2ID[event.which] || 0n;
-    const codeRiskyId = CODE_RISKY2ID[event.code] || 0n;
+    const codeRiskyId = KEY_UNSUPPORTED2ID[event.key] ? 0n : CODE_RISKY2ID[event.code] || 0n;
     return [keyId, whichId, codeRiskyId];
   } else if ( isMouseEvent ( event ) ) {
     return [MOUSE2ID[event.button] || 0n];

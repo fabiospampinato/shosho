@@ -185,6 +185,11 @@ const Mouse7 = 1n << 145n;
 const Mouse8 = 1n << 146n;
 const Mouse9 = 1n << 147n;
 
+/* UNSUPPORTED KEYS */
+
+const Section = 1n << 148n;
+const PlusMinus = 1n << 149n;
+
 /* MAIN */
 
 const CODE2ID = <const> {
@@ -282,7 +287,7 @@ const CODE_RISKY2ID = <const> {
   Slash
 };
 
-const KEY2ID = <const> {
+const KEY_DIGITS2ID = <const> {
   /* DIGITS */
   '0': Digit0,
   '1': Digit1,
@@ -293,7 +298,10 @@ const KEY2ID = <const> {
   '6': Digit6,
   '7': Digit7,
   '8': Digit8,
-  '9': Digit9,
+  '9': Digit9
+};
+
+const KEY_ALPHABET2ID = <const> {
   /* ALPHABET UPPERCASE */
   'A': KeyA,
   'B': KeyB,
@@ -347,7 +355,10 @@ const KEY2ID = <const> {
   'w': KeyW,
   'x': KeyX,
   'y': KeyY,
-  'z': KeyZ,
+  'z': KeyZ
+};
+
+const KEY_PUNCTUATION2ID = <const> {
   /* PUNCTUATION KEYS */
   '`': Backquote,
   '\\': Backslash,
@@ -382,6 +393,18 @@ const KEY2ID = <const> {
   '?': QuestionMark,
   '~': Tilde,
   '_': Underscore
+};
+
+const KEY_UNSUPPORTED2ID = <const> {
+  '§': Section,
+  '±': PlusMinus
+};
+
+const KEY2ID = <const> {
+  ...KEY_DIGITS2ID,
+  ...KEY_ALPHABET2ID,
+  ...KEY_PUNCTUATION2ID,
+  ...KEY_UNSUPPORTED2ID
 };
 
 const MOUSE2ID = <const> {
@@ -468,8 +491,10 @@ const NAME2ID = <const> {
   tab: Tab,
   up: ArrowUp,
   /* DIGITS & ALPHABET & PUNCTUATION KEYS */
+  ...KEY_DIGITS2ID,
+  ...KEY_ALPHABET2ID,
+  ...KEY_PUNCTUATION2ID,
   plus: Plus,
-  ...KEY2ID,
   /* FUNCTION KEYS */
   f1: F1,
   f2: F2,
@@ -624,4 +649,4 @@ const WHICH2ID = <const> {
 
 /* EXPORT */
 
-export {CODE2ID, CODE_RISKY2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID};
+export {CODE2ID, CODE_RISKY2ID, KEY_DIGITS2ID, KEY_ALPHABET2ID, KEY_PUNCTUATION2ID, KEY_UNSUPPORTED2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID};

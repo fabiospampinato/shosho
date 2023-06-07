@@ -113,10 +113,10 @@ shortcuts.register ( 'Right+Down', nope ( 'Right+Down' ) );
 shortcuts.register ( 'Left+Right', nope ( 'Left+Right' ) );
 shortcuts.register ( 'Up+Down', nope ( 'Up+Down' ) );
 
-shortcuts.register ( 'Down', yep ( 'ArrowDown' ) );
-shortcuts.register ( 'Left', yep ( 'ArrowLeft' ) );
-shortcuts.register ( 'Right', yep ( 'ArrowRight' ) );
-shortcuts.register ( 'Up', yep ( 'ArrowUp' ) );
+shortcuts.register ( 'Down', yep ( 'Down' ) );
+shortcuts.register ( 'Left', yep ( 'Left' ) );
+shortcuts.register ( 'Right', yep ( 'Right' ) );
+shortcuts.register ( 'Up', yep ( 'Up' ) );
 
 shortcuts.register ( 'Backspace', yep ( 'Backspace' ) );
 shortcuts.register ( 'CapsLock', yep ( 'CapsLock' ) );
@@ -271,9 +271,9 @@ shortcuts.register ( 'Alt+F', yep ( 'Alt+F' ) );
 shortcuts.register ( 'Cmd+K Cmd+A', yep ( 'Cmd+K Cmd+A' ) );
 shortcuts.register ( 'Cmd+K B', yep ( 'Cmd+K B' ) );
 shortcuts.register ( 'Cmd+K Alt+C', yep ( 'Cmd+K Alt+C' ) );
-shortcuts.register ( 'Shift+ClickLeft' , yep ( 'Shift+ClickLeft' ) );
-shortcuts.register ( 'Cmd+ClickMiddle' , yep ( 'Cmd+ClickMiddle' ) );
-shortcuts.register ( 'Alt+ClickLeft Cmd+ClickMiddle' , yep ( 'Alt+ClickLeft Cmd+ClickMiddle' ) );
+shortcuts.register ( 'Shift+ClickLeft', yep ( 'Shift+ClickLeft' ) );
+shortcuts.register ( 'Cmd+ClickMiddle', yep ( 'Cmd+ClickMiddle' ) );
+shortcuts.register ( 'Alt+ClickLeft Cmd+ClickMiddle', yep ( 'Alt+ClickLeft Cmd+ClickMiddle' ) );
 
 shortcuts.register ( 'CmdLeft+CmdRight', yep ( 'CmdLeft+CmdRight' ) );
 // shortcuts.register ( 'CmdLeft+CmdRight AltLeft+AltRight', yep ( 'CmdLeft+CmdRight AltLeft+AltRight' ) ); //TODO It'd be cool to support this too
@@ -288,6 +288,11 @@ shortcuts.register ( 'Up Up Down Down Left Right Left Right B A', yep ( 'Up Up D
 // shortcuts.register ( 'Down+Right', nope ( 'Down+Right' ) );
 
 shortcuts.register ( 'Ctrl+Cmd+Right', yep ( 'Ctrl+Cmd+Right' ) );
+
+shortcuts.register ( '§', yep ( '§' ) );
+shortcuts.register ( '±', yep ( '±' ) );
+shortcuts.register ( 'Shift+§', nope ( 'Shift+§' ) );
+shortcuts.register ( 'Shift+±', nope ( 'Shift+±' ) );
 
 shortcuts.start ();
 
