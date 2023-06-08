@@ -1,12 +1,12 @@
 
 /* IMPORT */
 
-import {FORMAT} from './constants';
+import {DEFAULT_FORMAT_FORMAT, DEFAULT_RECORD_FORMAT} from './constants';
 import {MODIFIER_BITMASK, TRIGGER_BITMASK, UNSUPPORTED} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
 import {CODE2ID, CODE_RISKY2ID, ID2FORMAT_TITLE, ID2FORMAT_ELECTRON, ID2FORMAT_SYMBOL, KEY_UNSUPPORTED2ID, KEY2ID, MOUSE2ID, NAME2ID, NAME_FORMATTING2ID,  WHICH2ID} from './maps';
-import {attempt, castArray, decompose, enumerate, first, isKeyboardEvent, isMac, isMouseEvent, isString, nope, or, uniq, without, yep} from './utils';
-import type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, HandlerOptions, Options} from './types';
+import {attempt, castArray, decompose, enumerate, first, isKeyboardEvent, isMac, isMouseEvent, isString, nope, or, orWith, uniq, without, yep} from './utils';
+import type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, HandlerOptions, Options, RecordHandler} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
 
@@ -48,11 +48,9 @@ const event2ids = ( event: Event ): bigint[] => { // Returning all possible dete
 
 //TODO: Support character-based shortcuts (like Shift+#), by forking the current chords, i.e. properly
 //TODO: Support character-based shortcut triggering
-//TODO: Support recording shortcuts
 //TODO: Support deleting shortcuts with a filter, without the disposer function
 //TODO: Make sure there's always an Event object passed to handlers
 //TODO: Check if the event got stopped
-//TODO: Maybe add a Never key, for when something unrecognized is used in a shortcut
 
 class ShoSho {
 
@@ -65,6 +63,7 @@ class ShoSho {
   private depthKonami: number;
   private shouldHandle: Checker;
   private options: Options;
+  private recorder?: RecordHandler;
 
   private tree: ChordNode = {
     children: {},
@@ -129,6 +128,18 @@ class ShoSho {
 
   };
 
+  private onRecord = ( ids: bigint[] ): void => {
+
+    if ( !this.recorder ) return;
+
+    const shortcut = first ( orWith ( this.chords, ids ).reverse ().map ( shortcut => ShoSho.format ( shortcut, DEFAULT_RECORD_FORMAT ) ) );
+
+    if ( !shortcut ) return;
+
+    this.recorder ( shortcut );
+
+  };
+
   private onDown = ( event: Event ): void => {
 
     if ( !this.shouldHandle ( event ) ) return;
@@ -144,6 +155,8 @@ class ShoSho {
     const chords = ( chord === chordNoTrigger ) ? [[chord, chordKonami]] : [[chord, chordKonami], [chordNoTrigger, chordKonamiNoTrigger]]; // Not being super strict about multi-key shortcuts here
     const ids = without ( uniq ( event2ids ( event ) ), 0n );
 
+    this.onRecord ( ids );
+
     for ( let i = 0, l = ids.length; i < l; i++ ) {
 
       const id = ids[i];
@@ -157,7 +170,7 @@ class ShoSho {
         this.chords[index] = chord | id;
         this.chordsKonami[indexKonami] = chordKonami | id;
 
-        const handled = attempt ( () => this.trigger ( this.chords, event ), false );
+        const handled = !this.recorder && attempt ( () => this.trigger ( this.chords, event ), false );
         const triggered = !!id2trigger ( this.chords[index] );
         const isLast = handled || ( isLastId && isLastChord );
 
@@ -220,6 +233,32 @@ class ShoSho {
   };
 
   /* PUBLIC API */
+
+  record = ( handler: RecordHandler ): Disposer => {
+
+    const isStartedAlready = this.active;
+
+    this.recorder = handler;
+
+    if ( !isStartedAlready ) {
+
+      this.start ();
+
+    }
+
+    return (): void => {
+
+      this.recorder = undefined;
+
+      if ( !isStartedAlready ) {
+
+        this.stop ();
+
+      }
+
+    };
+
+  };
 
   register = ( shortcut: string | string[], handler: Handler, options: HandlerOptions = {} ): Disposer => {
 
@@ -408,7 +447,7 @@ class ShoSho {
 
   /* STATIC API */
 
-  static format = ( shortcut: string | bigint | bigint[], format: Format = FORMAT ): string => {
+  static format = ( shortcut: string | bigint | bigint[], format: Format = DEFAULT_FORMAT_FORMAT ): string => {
 
     const formatMap = ( format === 'electron' ) ? ID2FORMAT_ELECTRON : ( format === 'symbols' ) ? ID2FORMAT_SYMBOL : ID2FORMAT_TITLE;
     const formatKeysJoiner = ( format === 'symbols' ) ? '' : '+';
@@ -477,6 +516,22 @@ class ShoSho {
     }
 
     return output;
+
+  };
+
+  static record = ( handler: RecordHandler ): Disposer => {
+
+    const shortcuts = new ShoSho ({
+      capture: true,
+      target: window,
+      shouldHandleEvent: event => {
+        event.preventDefault ();
+        event.stopImmediatePropagation ();
+        return true;
+      }
+    });
+
+    return shortcuts.record ( handler );
 
   };
 

@@ -134,6 +134,23 @@ ShoSho.format ( 'ControlLeft+A', 'short-flexible-directional' ); // => 'CmdOrCtr
 ShoSho.format ( 'ControlLeft+A', 'short-flexible-nondirectional' ); // => 'CmdOrCtrl+A'
 ShoSho.format ( 'ControlLeft+A', 'short-inflexible-directional' ); // => 'CtrlLeft+A'
 ShoSho.format ( 'ControlLeft+A', 'short-inflexible-nondirectional' ); // => 'Ctrl+A'
+
+// Let's record a shortcut, which will require manual trimming and formatting
+
+const dispose = ShoSho.record ( shortcut => {
+
+  console.log ( shortcut ); // => It could be 'A', 'CtrlLeft+A', 'CtrlLeft+A CtrlRight', 'CtrlLeft+A CtrlRight+B' and so on...
+
+  const trimmed = shortcut.replace ( /(^.*?)((?:Control(?:Left|Right)\+K )*\S+$)/, '$2' ); // Allowing only 'ControlLeft+K' and 'ControlRight+K' to not be the last shortcut in the sequence
+  const formatted = ShoSho.format ( trimmed, 'long-inflexible-nondirectional' ); // Ensuring the final shortcut is formatted exactly how we want it
+
+  console.log ( formatted ); // => It could be 'K', 'CtrlLeft+K', 'CtrlLeft+K CtrlRight', 'Ctrlleft+K CtrlRight+A' and so on...
+
+});
+
+// Let's stop recording
+
+dispose ();
 ```
 
 ## License

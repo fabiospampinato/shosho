@@ -136,6 +136,19 @@ const or = ( values: bigint[] ): bigint => {
 
 };
 
+const orWith = ( values: bigint[], otherValues: bigint[] ): bigint[][] => {
+
+  return otherValues.map ( other => {
+
+    const head = values.slice ( 0, -1 );
+    const tail = last ( values ) || 0n;
+
+    return [...head, tail | other];
+
+  });
+
+};
+
 const uniq = <T> ( values: T[] ): T[] => {
 
   return Array.from ( new Set ( values ) );
@@ -156,4 +169,4 @@ const yep = (): true => {
 
 /* EXPORT */
 
-export {attempt, castArray, decompose, enumerate, first, isArray, isKeyboardEvent, isMac, isMouseEvent, isString, last, nope, or, uniq, without, yep};
+export {attempt, castArray, decompose, enumerate, first, isArray, isKeyboardEvent, isMac, isMouseEvent, isString, last, nope, or, orWith, uniq, without, yep};

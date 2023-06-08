@@ -19,7 +19,7 @@ const nope = message => {
   };
 };
 
-/* MAIN */
+/* MAIN - LISTENING */
 
 const shortcuts = new ShoSho ();
 
@@ -300,6 +300,26 @@ shortcuts.start ();
   // shosho.stop ();
   // shosho.reset ();
 // }, 5000 );
+
+/* MAIN - RECORDING */
+
+shortcuts.register ( 'Ctrl+Cmd+R', () => {
+
+  const dispose = ShoSho.record ( shortcut => {
+    console.log ( '---' );
+    console.log ( shortcut );
+    console.log ( `"${shortcut}"` );
+    const trimmed = shortcut.replace ( /(^.*?)((?:Command(?:Left|Right)\+K )*\S+$)/, '$2' );
+    console.log ( trimmed );
+    const formatted = ShoSho.format ( trimmed, 'long-inflexible-nondirectional' );
+    console.log ( formatted );
+  });
+
+  setTimeout ( dispose, 5000 );
+
+  return true;
+
+});
 
 /* EXPORT */
 
