@@ -16,7 +16,7 @@ A modern and powerful shortcuts management library.
 - It supports multi-trigger shortcuts, like `Up+Right` or `Down+Left`, except when the `Meta` key is pressed, which is buggy in browsers.
 - It supports Konami codes, a.k.a. cheatcode shortcuts, like `Up Up Down Down Left Right Left Right B A`.
 - It supports formatting shortcuts in 10 different styles, including formatting for [Electron](https://www.electronjs.org) and as symbols for hints/tooltips.
-- It supports recording a shortcut, for easy shortcut customization.
+- It supports recording a shortcut, for customizing shortcuts easily.
 
 ## Shortcut Syntax
 
