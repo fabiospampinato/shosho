@@ -121,6 +121,19 @@ shortcuts.stop ();
 // Let's dispose of all registered shortcuts
 
 shortcuts.reset ();
+
+// Let's format a shortcut, with every supported format
+
+ShoSho.format ( 'ControlLeft+A', 'electron' ); // => 'Ctrl+A'
+ShoSho.format ( 'ControlLeft+A', 'symbols' ); // => '⌃A'
+ShoSho.format ( 'ControlLeft+A', 'long-flexible-directional' ); // => 'CommandOrControlLeft+A'
+ShoSho.format ( 'ControlLeft+A', 'long-flexible-nondirectional' ); // => 'CommandOrControl+A'
+ShoSho.format ( 'ControlLeft+A', 'long-inflexible-directional' ); // => 'ControlLeft+A'
+ShoSho.format ( 'ControlLeft+A', 'long-inflexible-nondirectional' ); // => 'Control+A'
+ShoSho.format ( 'ControlLeft+A', 'short-flexible-directional' ); // => 'CmdOrCtrlLeft+A'
+ShoSho.format ( 'ControlLeft+A', 'short-flexible-nondirectional' ); // => 'CmdOrCtrl+A'
+ShoSho.format ( 'ControlLeft+A', 'short-inflexible-directional' ); // => 'CtrlLeft+A'
+ShoSho.format ( 'ControlLeft+A', 'short-inflexible-nondirectional' ); // => 'Ctrl+A'
 ```
 
 ## License

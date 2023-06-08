@@ -9,6 +9,19 @@ type Disposer = {
   (): void
 };
 
+type Format = (
+  'electron' |
+  'symbols' |
+  'long-flexible-directional' |
+  'long-flexible-nondirectional' |
+  'long-inflexible-directional' |
+  'long-inflexible-nondirectional' |
+  'short-flexible-directional' |
+  'short-flexible-nondirectional' |
+  'short-inflexible-directional' |
+  'short-inflexible-nondirectional'
+);
+
 type Handler = {
   ( event?: Event ): boolean | void
 };
@@ -36,4 +49,4 @@ type Options = {
 
 /* EXPORT */
 
-export type {Checker, Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options};
+export type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, HandlerOptions, Options};

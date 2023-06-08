@@ -21,6 +21,24 @@ const castArray = <T> ( value: T | T[] ): T[] => {
 
 };
 
+const decompose = ( value: bigint ): bigint[] => { // Returns all the primitive components of a binary bigint
+
+  const components: bigint[] = [];
+
+  for ( let i = 0n; value > 0n; i += 1n, value >>= 1n ) {
+
+    if ( value & 1n ) {
+
+      components.push ( 1n << i );
+
+    }
+
+  }
+
+  return components;
+
+};
+
 const enumerate = ( parts: (bigint | bigint[])[] ): bigint[][] => { // Exhaustively listing all possible paths from the start to the end
 
   if ( !parts.length ) return [];
@@ -72,9 +90,19 @@ const isKeyboardEvent = ( value: unknown ): value is KeyboardEvent => {
 
 const isMac = (): boolean => {
 
-  if ( typeof navigator !== 'object' ) return false;
+  if ( typeof navigator === 'object' ) {
 
-  return /mac|ipod|iphone|ipad/i.test ( navigator.platform );
+    return /mac|ipod|iphone|ipad/i.test ( navigator.platform );
+
+  }
+
+  if ( typeof globalThis['process'] === 'object' ) {
+
+    return globalThis['process']['platform'] === 'darwin';
+
+  }
+
+  return false;
 
 };
 
@@ -128,4 +156,4 @@ const yep = (): true => {
 
 /* EXPORT */
 
-export {attempt, castArray, enumerate, first, isArray, isKeyboardEvent, isMac, isMouseEvent, isString, last, nope, or, uniq, without, yep};
+export {attempt, castArray, decompose, enumerate, first, isArray, isKeyboardEvent, isMac, isMouseEvent, isString, last, nope, or, uniq, without, yep};

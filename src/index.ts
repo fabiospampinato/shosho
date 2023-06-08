@@ -1,11 +1,12 @@
 
 /* IMPORT */
 
+import {FORMAT} from './constants';
 import {MODIFIER_BITMASK, TRIGGER_BITMASK, UNSUPPORTED} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
-import {CODE2ID, CODE_RISKY2ID, KEY_UNSUPPORTED2ID, KEY2ID, MOUSE2ID, NAME2ID, WHICH2ID} from './maps';
-import {attempt, castArray, enumerate, first, isKeyboardEvent, isMouseEvent, isString, nope, or, uniq, without, yep} from './utils';
-import type {Checker, Disposer, Handler, ChordNode, HandlerNode, HandlerOptions, Options} from './types';
+import {CODE2ID, CODE_RISKY2ID, ID2FORMAT_TITLE, ID2FORMAT_ELECTRON, ID2FORMAT_SYMBOL, KEY_UNSUPPORTED2ID, KEY2ID, MOUSE2ID, NAME2ID, NAME_FORMATTING2ID,  WHICH2ID} from './maps';
+import {attempt, castArray, decompose, enumerate, first, isKeyboardEvent, isMac, isMouseEvent, isString, nope, or, uniq, without, yep} from './utils';
+import type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, HandlerOptions, Options} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
 
@@ -13,16 +14,17 @@ const id2trigger = ( id: bigint ): bigint => {
   return ( id & TRIGGER_BITMASK );
 };
 
-const shortcut2ids = ( shortcut: string ): bigint[][] => {
+const shortcut2ids = ( shortcut: string, formatting: boolean = false ): bigint[][] => {
   const chords = shortcut.trim ().split ( WHITESPACE_RE );
-  const parts = chords.map ( chord2ids );
+  const parts = chords.map ( chord => chord2ids ( chord, formatting ) );
   const ids = enumerate ( parts );
   return ids;
 };
 
-const chord2ids = ( chord: string ): bigint[] => {
+const chord2ids = ( chord: string, formatting: boolean = false ): bigint[] => {
+  const map = formatting ? NAME_FORMATTING2ID : NAME2ID;
   const keys = chord.replace ( PLUSES_RE, '+Plus' ).toLowerCase ().split ( '+' );
-  const parts = keys.map<bigint | bigint[]> ( key => NAME2ID[key] || UNSUPPORTED );
+  const parts = keys.map<bigint | bigint[]> ( key => map[key] || UNSUPPORTED );
   const ids = enumerate ( parts ).map ( or );
   return ids;
 };
@@ -221,7 +223,7 @@ class ShoSho {
 
   register = ( shortcut: string | string[], handler: Handler, options: HandlerOptions = {} ): Disposer => {
 
-    const chordseses = castArray ( shortcut ).map ( shortcut2ids );
+    const chordseses = castArray ( shortcut ).map ( shortcut => shortcut2ids ( shortcut ) );
     const nodes: HandlerNode[] = [];
     const konami = !!options.konami;
 
@@ -401,6 +403,80 @@ class ShoSho {
     root.removeEventListener ( 'contextmenu', this.onDown, { capture } );
 
     window.removeEventListener ( 'blur', this.onBlur );
+
+  };
+
+  /* STATIC API */
+
+  static format = ( shortcut: string | bigint | bigint[], format: Format = FORMAT ): string => {
+
+    const formatMap = ( format === 'electron' ) ? ID2FORMAT_ELECTRON : ( format === 'symbols' ) ? ID2FORMAT_SYMBOL : ID2FORMAT_TITLE;
+    const formatKeysJoiner = ( format === 'symbols' ) ? '' : '+';
+    const formatShortcutsJoiner = ' ';
+
+    const chords = isString ( shortcut ) ? first ( shortcut2ids ( shortcut, true ) ) || [] : castArray ( shortcut );
+    const components = chords.map ( chord => ( chord === UNSUPPORTED ) ? [] : decompose ( chord ) );
+
+    let output = components.map ( component => component.map ( id => formatMap[id] || '§' ).join ( formatKeysJoiner ) ).join ( formatShortcutsJoiner );
+
+    if ( format.includes ( '-nondirectional' ) ) {
+
+      /* REMOVING LEFT/RIGHT SUFFIXES FROM MODIFIERS */
+
+      output = output.replaceAll ( 'ControlLeft', 'Control' );
+      output = output.replaceAll ( 'ControlRight', 'Control' );
+      output = output.replaceAll ( 'CommandLeft', 'Command' );
+      output = output.replaceAll ( 'CommandRight', 'Command' );
+      output = output.replaceAll ( 'AltLeft', 'Alt' );
+      output = output.replaceAll ( 'AltRight', 'Alt' );
+      output = output.replaceAll ( 'ShiftLeft', 'Shift' );
+      output = output.replaceAll ( 'ShiftRight', 'Shift' );
+
+    }
+
+    if ( format.includes ( '-inflexible' ) ) {
+
+      /* RESOLVING FLEXIBLE MODIFIERS */
+
+      const replacement = isMac () ? 'Command' : 'Control';
+
+      output = output.replaceAll ( 'CommandOrControl', replacement );
+      output = output.replaceAll ( 'CommandLeftOrControl', replacement );
+      output = output.replaceAll ( 'CommandRightOrControl', replacement );
+
+    }
+
+    if ( format.includes ( '-flexible' ) ) {
+
+      /* SPARING CONTROL+COMMAND IN A SHORTCUT */
+
+      output = output.replace ( /Control(\S+)Command/g, '§ontrol$1§ommand' );
+      output = output.replace ( /Command(\S+)Control/g, '§ommand$1§ontrol' );
+
+      /* MAKING OTHERS CONTROLS/COMMANDS FLEXIBLE */
+
+      output = output.replace ( /(^|\W)Control/g, '$1CommandOrControl' );
+      output = output.replace ( /Command(?!Or|Left|Right)/g, 'CommandOrControl' );
+      output = output.replace ( /CommandLeft(?!Or)/g, 'CommandOrControlLeft' );
+      output = output.replace ( /CommandRight(?!Or)/g, 'CommandOrControlRight' );
+
+      /* RESTORING CONTROL+COMMAND IN A SHORTCUT */
+
+      output = output.replace ( /§ontrol/g, 'Control' );
+      output = output.replace ( /§ommand/g, 'Command' );
+
+    }
+
+    if ( format.includes ( 'short-' ) ) {
+
+      /* SHORTHENING MODIFIERS */
+
+      output = output.replaceAll ( 'Command', 'Cmd' );
+      output = output.replaceAll ( 'Control', 'Ctrl' );
+
+    }
+
+    return output;
 
   };
 
