@@ -449,9 +449,13 @@ const NAME2ID = <const> {
   cmdleftorctrlleft: isMac () ? MetaLeft : ControlLeft,
   cmdrightorctrlright: isMac () ? MetaRight : ControlRight,
   cmdorctrl: isMac () ? [MetaLeft, MetaRight] : [ControlLeft, ControlRight],
+  cmdorctrlleft: isMac () ? MetaLeft : ControlLeft,
+  cmdorctrlright: isMac () ? MetaRight : ControlRight,
   commandleftorcontrolleft: isMac () ? MetaLeft : ControlLeft,
   commandrightorcontrolright: isMac () ? MetaRight : ControlRight,
   commandorcontrol: isMac () ? [MetaLeft, MetaRight] : [ControlLeft, ControlRight],
+  commandorcontrolleft: isMac () ? MetaLeft : ControlLeft,
+  commandorcontrolright: isMac () ? MetaRight : ControlRight,
   /* MOUSE */
   clickleft: Mouse0,
   clickmiddle: Mouse1,
