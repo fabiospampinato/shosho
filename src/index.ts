@@ -501,8 +501,8 @@ class ShoSho {
 
       /* RESTORING CONTROL+COMMAND IN A SHORTCUT */
 
-      output = output.replace ( /§ontrol/g, 'Control' );
-      output = output.replace ( /§ommand/g, 'Command' );
+      output = output.replaceAll ( '§ontrol', 'Control' );
+      output = output.replaceAll ( '§ommand', 'Command' );
 
     }
 
