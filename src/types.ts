@@ -51,6 +51,10 @@ type RecordHandler = {
   ( shortcut: string ): void
 };
 
+type RecordOptions = {
+  shouldHandleEvent?: ( event: Event ) => boolean
+};
+
 /* EXPORT */
 
-export type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, HandlerOptions, Options, RecordHandler};
+export type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, HandlerOptions, Options, RecordHandler, RecordOptions};

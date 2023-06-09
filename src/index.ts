@@ -6,7 +6,7 @@ import {MODIFIER_BITMASK, TRIGGER_BITMASK, UNSUPPORTED} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
 import {CODE2ID, CODE_RISKY2ID, ID2FORMAT_TITLE, ID2FORMAT_ELECTRON, ID2FORMAT_SYMBOL, KEY_UNSUPPORTED2ID, KEY2ID, MOUSE2ID, NAME2ID, NAME_FORMATTING2ID,  WHICH2ID} from './maps';
 import {attempt, castArray, decompose, enumerate, first, isKeyboardEvent, isMac, isMouseEvent, isString, nope, or, orWith, uniq, without, yep} from './utils';
-import type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, HandlerOptions, Options, RecordHandler} from './types';
+import type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, HandlerOptions, Options, RecordHandler, RecordOptions} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
 
@@ -519,12 +519,15 @@ class ShoSho {
 
   };
 
-  static record = ( handler: RecordHandler ): Disposer => {
+  static record = ( handler: RecordHandler, options: RecordOptions = {} ): Disposer => {
+
+    const shouldHandle = options.shouldHandleEvent || yep;
 
     const shortcuts = new ShoSho ({
       capture: true,
       target: window,
       shouldHandleEvent: event => {
+        if ( !shouldHandle ( event ) ) return false;
         event.preventDefault ();
         event.stopImmediatePropagation ();
         return true;
