@@ -543,3 +543,4 @@ class ShoSho {
 /* EXPORT */
 
 export default ShoSho;
+export type {Format, Handler, HandlerOptions, Options, RecordHandler, RecordOptions};
