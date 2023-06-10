@@ -503,14 +503,7 @@ class ShoSho {
 
       /* REMOVING LEFT/RIGHT SUFFIXES FROM MODIFIERS */
 
-      output = output.replaceAll ( 'ControlLeft', 'Control' );
-      output = output.replaceAll ( 'ControlRight', 'Control' );
-      output = output.replaceAll ( 'CommandLeft', 'Command' );
-      output = output.replaceAll ( 'CommandRight', 'Command' );
-      output = output.replaceAll ( 'AltLeft', 'Alt' );
-      output = output.replaceAll ( 'AltRight', 'Alt' );
-      output = output.replaceAll ( 'ShiftLeft', 'Shift' );
-      output = output.replaceAll ( 'ShiftRight', 'Shift' );
+      output = output.replace ( /(Control|Command|Alt|Shift)(Left|Right)/g, '$1' );
 
       /* RESTORING LEFT+RIGHT MODIFIERS IN A SHORTCUT */
 
@@ -525,9 +518,7 @@ class ShoSho {
 
       const replacement = isMac () ? 'Command' : 'Control';
 
-      output = output.replaceAll ( 'CommandOrControl', replacement );
-      output = output.replaceAll ( 'CommandLeftOrControl', replacement );
-      output = output.replaceAll ( 'CommandRightOrControl', replacement );
+      output = output.replace ( /Command(Left|Right)?OrControl/g, replacement );
 
     }
 
