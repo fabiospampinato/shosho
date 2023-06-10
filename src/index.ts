@@ -498,8 +498,8 @@ class ShoSho {
 
       /* SPARING LEFT+COMMAND IN A SHORTCUT */
 
-      output = output.replace ( /Left(\S+)Right/g, '§eft$1§ight' );
-      output = output.replace ( /Right(\S+)Left/g, '§ight$1§eft' );
+      output = output.replace ( /Left(\S*?\w)Right/g, '§eft$1§ight' );
+      output = output.replace ( /Right(\S*?\w)Left/g, '§ight$1§eft' );
 
       /* REMOVING LEFT/RIGHT SUFFIXES FROM MODIFIERS */
 
