@@ -125,9 +125,9 @@ class ShoSho {
     let addId = 0n;
 
     const hasAlt = has ( chord, CODE2ID.AltLeft ) || has ( chord, CODE2ID.AltRight );
-    const hasCtrl = has ( chord, CODE2ID.ControlLeft ) && has ( chord, CODE2ID.ControlRight );
-    const hasMeta = has ( chord, CODE2ID.MetaLeft ) && has ( chord, CODE2ID.MetaRight );
-    const hasShift = has ( chord, CODE2ID.ShiftLeft ) && has ( chord, CODE2ID.ShiftRight );
+    const hasCtrl = has ( chord, CODE2ID.ControlLeft ) || has ( chord, CODE2ID.ControlRight );
+    const hasMeta = has ( chord, CODE2ID.MetaLeft ) || has ( chord, CODE2ID.MetaRight );
+    const hasShift = has ( chord, CODE2ID.ShiftLeft ) || has ( chord, CODE2ID.ShiftRight );
 
     const isAlt = code === 'AltLeft' || code === 'AltRight';
     const isCtrl = code === 'ControlLeft' || code === 'ControlRight';
