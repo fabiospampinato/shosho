@@ -114,6 +114,7 @@ class ShoSho {
     if ( !isKeyboardEvent ( event ) && !isMouseEvent ( event ) ) return;
 
     const {altKey, ctrlKey, metaKey, shiftKey} = event;
+    const code = isKeyboardEvent ( event ) ? event.code : '';
 
     const index = this.chords.length - 1;
     const indexKonami = this.chordsKonami.length - 1;
@@ -123,10 +124,20 @@ class ShoSho {
 
     let addId = 0n;
 
-    if ( altKey && !has ( chord, CODE2ID.AltLeft ) && !has ( chord, CODE2ID.AltRight ) ) addId |= CODE2ID.AltLeft;
-    if ( ctrlKey && !has ( chord, CODE2ID.ControlLeft ) && !has ( chord, CODE2ID.ControlRight ) ) addId |= CODE2ID.ControlLeft;
-    if ( metaKey && !has ( chord, CODE2ID.MetaLeft ) && !has ( chord, CODE2ID.MetaRight ) ) addId |= CODE2ID.MetaLeft;
-    if ( shiftKey && !has ( chord, CODE2ID.ShiftLeft ) && !has ( chord, CODE2ID.ShiftRight ) ) addId |= CODE2ID.ShiftLeft;
+    const hasAlt = has ( chord, CODE2ID.AltLeft ) || has ( chord, CODE2ID.AltRight );
+    const hasCtrl = has ( chord, CODE2ID.ControlLeft ) && has ( chord, CODE2ID.ControlRight );
+    const hasMeta = has ( chord, CODE2ID.MetaLeft ) && has ( chord, CODE2ID.MetaRight );
+    const hasShift = has ( chord, CODE2ID.ShiftLeft ) && has ( chord, CODE2ID.ShiftRight );
+
+    const isAlt = code === 'AltLeft' || code === 'AltRight';
+    const isCtrl = code === 'ControlLeft' || code === 'ControlRight';
+    const isMeta = code === 'MetaLeft' || code === 'MetaRight' || code === 'OSLeft' || code === 'OSRight';
+    const isShift = code === 'ShiftLeft' || code === 'ShiftRight';
+
+    if ( altKey && !hasAlt && !isAlt ) addId |= CODE2ID.AltLeft;
+    if ( ctrlKey && !hasCtrl && !isCtrl ) addId |= CODE2ID.ControlLeft;
+    if ( metaKey && !hasMeta && !isMeta ) addId |= CODE2ID.MetaLeft;
+    if ( shiftKey && !hasShift && !isShift ) addId |= CODE2ID.ShiftLeft;
 
     if ( addId ) {
 
