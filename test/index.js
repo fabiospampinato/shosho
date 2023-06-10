@@ -112,6 +112,17 @@ describe ( 'ShoSho', () => {
         ['short-flexible-nondirectional', 'Cmd+Ctrl+A Cmd', 'Ctrl+Cmd+A CmdOrCtrl'],
         ['short-inflexible-directional', 'Cmd+Ctrl+A Cmd', 'Ctrl+Cmd+A Cmd'],
         ['short-inflexible-nondirectional', 'Cmd+Ctrl+A Cmd', 'Ctrl+Cmd+A Cmd'],
+        // CmdLeft+CmdRight
+        ['electron', 'CmdLeft+CmdRight', 'Cmd+Cmd'],
+        ['symbols', 'CmdLeft+CmdRight', '⌘⌘'],
+        ['long-flexible-directional', 'CmdLeft+CmdRight', 'CommandOrControlLeft+CommandOrControlRight'],
+        ['long-flexible-nondirectional', 'CmdLeft+CmdRight', 'CommandOrControlLeft+CommandOrControlRight'],
+        ['long-inflexible-directional', 'CmdLeft+CmdRight', 'CommandLeft+CommandRight'],
+        ['long-inflexible-nondirectional', 'CmdLeft+CmdRight', 'CommandLeft+CommandRight'],
+        ['short-flexible-directional', 'CmdLeft+CmdRight', 'CmdOrCtrlLeft+CmdOrCtrlRight'],
+        ['short-flexible-nondirectional', 'CmdLeft+CmdRight', 'CmdOrCtrlLeft+CmdOrCtrlRight'],
+        ['short-inflexible-directional', 'CmdLeft+CmdRight', 'CmdLeft+CmdRight'],
+        ['short-inflexible-nondirectional', 'CmdLeft+CmdRight', 'CmdLeft+CmdRight'],
         // Others...
         ['electron', 'Alt+Cmd+Ctrl+Shift', 'Ctrl+Cmd+Alt+Shift'],
         ['electron', 'Shift+Ctrl+Cmd+Alt', 'Ctrl+Cmd+Alt+Shift']

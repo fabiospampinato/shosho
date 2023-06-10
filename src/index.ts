@@ -485,6 +485,11 @@ class ShoSho {
 
     if ( format.includes ( '-nondirectional' ) ) {
 
+      /* SPARING LEFT+COMMAND IN A SHORTCUT */
+
+      output = output.replace ( /Left(\S+)Right/g, '§eft$1§ight' );
+      output = output.replace ( /Right(\S+)Left/g, '§ight$1§eft' );
+
       /* REMOVING LEFT/RIGHT SUFFIXES FROM MODIFIERS */
 
       output = output.replaceAll ( 'ControlLeft', 'Control' );
@@ -495,6 +500,11 @@ class ShoSho {
       output = output.replaceAll ( 'AltRight', 'Alt' );
       output = output.replaceAll ( 'ShiftLeft', 'Shift' );
       output = output.replaceAll ( 'ShiftRight', 'Shift' );
+
+      /* RESTORING LEFT+COMMAND IN A SHORTCUT */
+
+      output = output.replaceAll ( '§eft', 'Left' );
+      output = output.replaceAll ( '§ight', 'Right' );
 
     }
 
