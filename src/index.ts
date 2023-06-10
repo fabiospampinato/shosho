@@ -10,6 +10,10 @@ import type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, Handler
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
 
+const has = ( id: bigint, key: bigint ): boolean => {
+  return !!( id & key );
+};
+
 const id2trigger = ( id: bigint ): bigint => {
   return ( id & TRIGGER_BITMASK );
 };
@@ -105,7 +109,7 @@ class ShoSho {
 
   };
 
-  private onNormalize = ( event: Event ): void => { // We might be missing some keyup/mouseup events, safer to check again what the state of modifiers is
+  private onNormalize = ( event: Event ): void => { // We might be missing some keydown/keyup events, safer to check again what the state of modifiers is
 
     if ( !isKeyboardEvent ( event ) && !isMouseEvent ( event ) ) return;
 
@@ -113,18 +117,39 @@ class ShoSho {
 
     const index = this.chords.length - 1;
     const indexKonami = this.chordsKonami.length - 1;
+    const chord = this.chords[index];
 
-    let id = 0n;
+    /* MISSING KEYDOWNS */ // We can't tell whether the left one or the right one was pressed, so we're taking a bit of a gamble on the left one //TODO: Maybe listen always to events to have that bit of data always available
 
-    if ( !altKey ) id |= CODE2ID.AltLeft | CODE2ID.AltRight;
-    if ( !ctrlKey ) id |= CODE2ID.ControlLeft | CODE2ID.ControlRight;
-    if ( !metaKey ) id |= CODE2ID.MetaLeft | CODE2ID.MetaRight;
-    if ( !shiftKey ) id |= CODE2ID.ShiftLeft | CODE2ID.ShiftRight;
+    let addId = 0n;
 
-    if ( !id ) return;
+    if ( altKey && !has ( chord, CODE2ID.AltLeft ) && !has ( chord, CODE2ID.AltRight ) ) addId |= CODE2ID.AltLeft;
+    if ( ctrlKey && !has ( chord, CODE2ID.ControlLeft ) && !has ( chord, CODE2ID.ControlRight ) ) addId |= CODE2ID.ControlLeft;
+    if ( metaKey && !has ( chord, CODE2ID.MetaLeft ) && !has ( chord, CODE2ID.MetaRight ) ) addId |= CODE2ID.MetaLeft;
+    if ( shiftKey && !has ( chord, CODE2ID.ShiftLeft ) && !has ( chord, CODE2ID.ShiftRight ) ) addId |= CODE2ID.ShiftLeft;
 
-    this.chords[index] &=~ id;
-    this.chordsKonami[indexKonami] &=~ id;
+    if ( addId ) {
+
+      this.chords[index] |= addId;
+      this.chordsKonami[indexKonami] |= addId;
+
+    }
+
+    /* MISSING KEYUPS */
+
+    let deleteId = 0n;
+
+    if ( !altKey ) deleteId |= CODE2ID.AltLeft | CODE2ID.AltRight;
+    if ( !ctrlKey ) deleteId |= CODE2ID.ControlLeft | CODE2ID.ControlRight;
+    if ( !metaKey ) deleteId |= CODE2ID.MetaLeft | CODE2ID.MetaRight;
+    if ( !shiftKey ) deleteId |= CODE2ID.ShiftLeft | CODE2ID.ShiftRight;
+
+    if ( deleteId ) {
+
+      this.chords[index] &=~ deleteId;
+      this.chordsKonami[indexKonami] &=~ deleteId;
+
+    }
 
   };
 
