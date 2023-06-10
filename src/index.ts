@@ -496,10 +496,10 @@ class ShoSho {
 
     if ( format.includes ( '-nondirectional' ) ) {
 
-      /* SPARING LEFT+COMMAND IN A SHORTCUT */
+      /* SPARING LEFT+RIGHT MODIFIERS IN A SHORTCUT */
 
-      output = output.replace ( /Left(\S*?\w)Right/g, '§eft$1§ight' );
-      output = output.replace ( /Right(\S*?\w)Left/g, '§ight$1§eft' );
+      output = output.replace ( /(CommandOrControl|Control|Command|Alt|Shift)Left(\S+)\1Right/g, '$1§eft$2$1§ight' );
+      output = output.replace ( /(CommandOrControl|Control|Command|Alt|Shift)Right(\S+)\1Left/g, '$1§ight$2$1§eft' );
 
       /* REMOVING LEFT/RIGHT SUFFIXES FROM MODIFIERS */
 
@@ -512,7 +512,7 @@ class ShoSho {
       output = output.replaceAll ( 'ShiftLeft', 'Shift' );
       output = output.replaceAll ( 'ShiftRight', 'Shift' );
 
-      /* RESTORING LEFT+COMMAND IN A SHORTCUT */
+      /* RESTORING LEFT+RIGHT MODIFIERS IN A SHORTCUT */
 
       output = output.replaceAll ( '§eft', 'Left' );
       output = output.replaceAll ( '§ight', 'Right' );
