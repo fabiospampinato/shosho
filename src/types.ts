@@ -32,6 +32,7 @@ type ChordNode = {
 };
 
 type HandlerNode = {
+  parent?: ChordNode,
   prev?: HandlerNode,
   next?: HandlerNode,
   handler: Handler

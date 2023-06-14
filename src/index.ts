@@ -337,6 +337,7 @@ class ShoSho {
         const handlers = node.handlers;
 
         node.handlers = handlers.next = {
+          parent: node,
           prev: handlers,
           handler
         };
@@ -357,6 +358,7 @@ class ShoSho {
 
         if ( prev ) prev.next = next;
         if ( next ) next.prev = prev;
+        if ( !next && node.parent ) node.parent.handlers = prev!; //TSC //UGLY: Write this better
 
       }
 

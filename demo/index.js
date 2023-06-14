@@ -247,8 +247,8 @@ shortcuts.register ( 'Shift+A', nope ( 'Shift+A' ) );
 shortcuts.register ( 'Shift+B', nope ( 'Shift+B' ) );
 shortcuts.register ( 'Shift+C', nope ( 'Shift+C' ) );
 shortcuts.register ( 'Shift+Z', nope ( 'Shift+Z' ) );
+shortcuts.register ( 'Shift+Y', nope ( 'Shift+Y' ) );
 shortcuts.register ( 'Shift+X', nope ( 'Shift+X' ) );
-shortcuts.register ( 'Shift+C', nope ( 'Shift+C' ) );
 
 shortcuts.register ( 'ClickLeft', nope ( 'ClickLeft' ) );
 shortcuts.register ( 'ClickRight', nope ( 'ClickRight' ) );
@@ -293,6 +293,8 @@ shortcuts.register ( '§', yep ( '§' ) );
 shortcuts.register ( '±', yep ( '±' ) );
 shortcuts.register ( 'Shift+§', nope ( 'Shift+§' ) );
 shortcuts.register ( 'Shift+±', nope ( 'Shift+±' ) );
+
+shortcuts.register ( 'Ctrl+Cmd+A', nope ( 'NOT DISPOSED!' ) )();
 
 shortcuts.start ();
 
