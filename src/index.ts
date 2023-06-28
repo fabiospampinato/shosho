@@ -70,6 +70,7 @@ class ShoSho {
   private chordsKonami: bigint[];
   private depth: number;
   private depthKonami: number;
+  private depthRecorder: number;
   private shouldHandle: Checker;
   private options: Options;
   private recorder?: RecordHandler;
@@ -97,6 +98,7 @@ class ShoSho {
     this.chordsKonami = [0n];
     this.depth = 0;
     this.depthKonami = 0;
+    this.depthRecorder = 0;
     this.shouldHandle = options.shouldHandleEvent || yep;
     this.options = options;
 
@@ -240,15 +242,29 @@ class ShoSho {
 
         }
 
-        if ( this.chords.length > this.depth ) {
+        if ( this.recorder ) {
 
-          this.chords = takeRight ( this.chords, Math.max ( 1, this.depth ) );
+          if ( this.chords.length > this.depthRecorder ) {
 
-        }
+            this.chords = takeRight ( this.chords, Math.max ( 1, this.depthRecorder ) );
 
-        if ( this.chordsKonami.length > this.depthKonami ) {
+          }
 
-          this.chordsKonami = takeRight ( this.chordsKonami, Math.max ( 1, this.depthKonami ) );
+          this.chordsKonami = [0n];
+
+        } else {
+
+          if ( this.chords.length > this.depth ) {
+
+            this.chords = takeRight ( this.chords, Math.max ( 1, this.depth ) );
+
+          }
+
+          if ( this.chordsKonami.length > this.depthKonami ) {
+
+            this.chordsKonami = takeRight ( this.chordsKonami, Math.max ( 1, this.depthKonami ) );
+
+          }
 
         }
 
@@ -588,6 +604,10 @@ class ShoSho {
         return true;
       }
     });
+
+    shortcuts.chords = [0n];
+    shortcuts.chordsKonami = [0n];
+    shortcuts.depthRecorder = options.limit ?? 10;
 
     return shortcuts.record ( handler );
 
