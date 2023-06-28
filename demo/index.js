@@ -315,6 +315,8 @@ shortcuts.register ( 'Ctrl+Cmd+R', () => {
     console.log ( trimmed );
     const formatted = ShoSho.format ( trimmed, 'long-inflexible-nondirectional' );
     console.log ( formatted );
+  }, {
+    passthrough: false
   });
 
   setTimeout ( dispose, 5000 );

@@ -53,6 +53,7 @@ type RecordHandler = {
 };
 
 type RecordOptions = {
+  passthrough?: boolean,
   shouldHandleEvent?: ( event: Event ) => boolean
 };
 

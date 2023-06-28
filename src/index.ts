@@ -581,8 +581,10 @@ class ShoSho {
       target: window,
       shouldHandleEvent: event => {
         if ( !shouldHandle ( event ) ) return false;
-        event.preventDefault ();
-        event.stopImmediatePropagation ();
+        if ( !options.passthrough ) {
+          event.preventDefault ();
+          event.stopImmediatePropagation ();
+        }
         return true;
       }
     });
