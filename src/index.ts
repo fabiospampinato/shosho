@@ -5,7 +5,7 @@ import {DEFAULT_FORMAT_FORMAT, DEFAULT_RECORD_FORMAT} from './constants';
 import {MODIFIER_BITMASK, TRIGGER_BITMASK, UNSUPPORTED} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
 import {CODE2ID, CODE_RISKY2ID, ID2FORMAT_TITLE, ID2FORMAT_ELECTRON, ID2FORMAT_SYMBOL, KEY_UNSUPPORTED2ID, KEY2ID, MOUSE2ID, NAME2ID, NAME_FORMATTING2ID, WHICH2ID} from './maps';
-import {attempt, castArray, decompose, enumerate, first, isKeyboardEvent, isMac, isMouseEvent, isString, nope, or, orWith, uniq, without, yep} from './utils';
+import {attempt, castArray, decompose, enumerate, first, isKeyboardEvent, isMac, isMouseEvent, isString, nope, or, orWith, takeRight, uniq, without, yep} from './utils';
 import type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, HandlerOptions, Options, RecordHandler, RecordOptions} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
@@ -242,13 +242,13 @@ class ShoSho {
 
         if ( this.chords.length > this.depth ) {
 
-          this.chords = this.chords.slice ( - this.depth );
+          this.chords = takeRight ( this.chords, Math.max ( 1, this.depth ) );
 
         }
 
         if ( this.chordsKonami.length > this.depthKonami ) {
 
-          this.chordsKonami = this.chordsKonami.slice ( - this.depthKonami );
+          this.chordsKonami = takeRight ( this.chordsKonami, Math.max ( 1, this.depthKonami ) );
 
         }
 

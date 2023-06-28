@@ -149,6 +149,18 @@ const orWith = ( values: bigint[], otherValues: bigint[] ): bigint[][] => {
 
 };
 
+const take = <T> ( arr: T[], nr: number ): T[] => {
+
+  return arr.slice ( 0, Math.max ( 0, nr ) );
+
+};
+
+const takeRight = <T> ( arr: T[], nr: number ): T[] => {
+
+  return arr.slice ( arr.length - Math.max ( 0, nr ), arr.length );
+
+};
+
 const uniq = <T> ( values: T[] ): T[] => {
 
   return Array.from ( new Set ( values ) );
@@ -169,4 +181,4 @@ const yep = (): true => {
 
 /* EXPORT */
 
-export {attempt, castArray, decompose, enumerate, first, isArray, isKeyboardEvent, isMac, isMouseEvent, isString, last, nope, or, orWith, uniq, without, yep};
+export {attempt, castArray, decompose, enumerate, first, isArray, isKeyboardEvent, isMac, isMouseEvent, isString, last, nope, or, orWith, take, takeRight, uniq, without, yep};
