@@ -295,6 +295,8 @@ class ShoSho {
 
     const isStartedAlready = this.active;
 
+    this.chords = [0n];
+    this.chordsKonami = [0n];
     this.recorder = handler;
 
     if ( !isStartedAlready ) {
@@ -305,6 +307,8 @@ class ShoSho {
 
     return (): void => {
 
+      this.chords = [0n];
+      this.chordsKonami = [0n];
       this.recorder = undefined;
 
       if ( !isStartedAlready ) {
@@ -605,8 +609,6 @@ class ShoSho {
       }
     });
 
-    shortcuts.chords = [0n];
-    shortcuts.chordsKonami = [0n];
     shortcuts.depthRecorder = options.limit ?? 10;
 
     return shortcuts.record ( handler );
