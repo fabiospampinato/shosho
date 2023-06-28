@@ -4,7 +4,7 @@
 import {DEFAULT_FORMAT_FORMAT, DEFAULT_RECORD_FORMAT} from './constants';
 import {MODIFIER_BITMASK, TRIGGER_BITMASK, UNSUPPORTED} from './constants';
 import {PLUSES_RE, WHITESPACE_RE} from './constants';
-import {CODE2ID, CODE_RISKY2ID, ID2FORMAT_TITLE, ID2FORMAT_ELECTRON, ID2FORMAT_SYMBOL, KEY_UNSUPPORTED2ID, KEY2ID, MOUSE2ID, NAME2ID, NAME_FORMATTING2ID,  WHICH2ID} from './maps';
+import {CODE2ID, CODE_RISKY2ID, ID2FORMAT_TITLE, ID2FORMAT_ELECTRON, ID2FORMAT_SYMBOL, KEY_UNSUPPORTED2ID, KEY2ID, MOUSE2ID, NAME2ID, NAME_FORMATTING2ID, WHICH2ID} from './maps';
 import {attempt, castArray, decompose, enumerate, first, isKeyboardEvent, isMac, isMouseEvent, isString, nope, or, orWith, uniq, without, yep} from './utils';
 import type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, HandlerOptions, Options, RecordHandler, RecordOptions} from './types';
 
@@ -16,6 +16,11 @@ const has = ( id: bigint, key: bigint ): boolean => {
 
 const id2trigger = ( id: bigint ): bigint => {
   return ( id & TRIGGER_BITMASK );
+};
+
+const shortcut2keys = ( shortcut: string ): string[] => {
+  const keys = shortcut.trim ().replace ( PLUSES_RE, '+Plus' ).replace ( /(\S)\+/g, '$1 ' ).split ( WHITESPACE_RE );
+  return keys;
 };
 
 const shortcut2ids = ( shortcut: string, formatting: boolean = false ): bigint[][] => {
@@ -555,6 +560,15 @@ class ShoSho {
     }
 
     return output;
+
+  };
+
+  static isShortcut = ( shortcut: string ): boolean => {
+
+    const keys = shortcut2keys ( shortcut ).map ( key => key.toLowerCase () );
+    const isValid = keys.every ( key => key in NAME2ID );
+
+    return isValid;
 
   };
 

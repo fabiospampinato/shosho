@@ -2,6 +2,7 @@
 /* IMPORT */
 
 import {describe} from 'fava';
+import {NAME2ID} from '../dist/maps.js';
 import ShoSho from '../dist/index.js';
 
 /* MAIN */
@@ -180,6 +181,41 @@ describe ( 'ShoSho', () => {
         t.is ( ShoSho.format ( input, format ), output );
 
       }
+
+    });
+
+  });
+
+  describe ( 'isShortcut', it => {
+
+    it ( 'supports detecting valid shortcuts', t => {
+
+      for ( const key in NAME2ID ) {
+
+        t.true ( ShoSho.isShortcut ( key ) );
+        t.true ( ShoSho.isShortcut ( key.toUpperCase () ) );
+        t.true ( ShoSho.isShortcut ( key.toLowerCase () ) );
+
+      }
+
+      for ( const key in NAME2ID ) {
+
+        t.false ( ShoSho.isShortcut ( `${key}${key}` ) );
+
+      }
+
+      t.true ( ShoSho.isShortcut ( 'Cmd' ) );
+      t.true ( ShoSho.isShortcut ( 'Command' ) );
+      t.true ( ShoSho.isShortcut ( 'Command+A' ) );
+      t.true ( ShoSho.isShortcut ( 'Command A' ) );
+      t.true ( ShoSho.isShortcut ( 'Command+A B' ) );
+      t.true ( ShoSho.isShortcut ( 'CommandLeft+A' ) );
+      t.true ( ShoSho.isShortcut ( 'CommandRight+A' ) );
+      t.true ( ShoSho.isShortcut ( '+' ) );
+
+      t.false ( ShoSho.isShortcut ( 'Comma' ) );
+      t.false ( ShoSho.isShortcut ( 'AB' ) );
+      t.false ( ShoSho.isShortcut ( 'CommandA' ) );
 
     });
 

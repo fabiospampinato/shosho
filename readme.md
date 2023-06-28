@@ -137,6 +137,11 @@ ShoSho.format ( 'ControlLeft+A', 'short-flexible-nondirectional' ); // => 'CmdOr
 ShoSho.format ( 'ControlLeft+A', 'short-inflexible-directional' ); // => 'CtrlLeft+A'
 ShoSho.format ( 'ControlLeft+A', 'short-inflexible-nondirectional' ); // => 'Ctrl+A'
 
+// Let's check if something is a valid shortcut
+
+ShoSho.isShortcut ( 'Control+A' ); // => true
+ShoSho.isShortcut ( 'ControlA' ); // => false
+
 // Let's record a shortcut, which will require manual trimming and formatting
 
 const dispose = ShoSho.record ( shortcut => {
