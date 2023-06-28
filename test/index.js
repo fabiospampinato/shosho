@@ -171,7 +171,8 @@ describe ( 'ShoSho', () => {
         // Others...
         ['electron', 'Alt+Cmd+Ctrl+Shift', 'Ctrl+Cmd+Alt+Shift'],
         ['electron', 'Shift+Ctrl+Cmd+Alt', 'Ctrl+Cmd+Alt+Shift'],
-        ['short-inflexible-nondirectional', 'CommandOrControlLeft+CommandOrControlRight', 'CmdLeft+CmdRight']
+        ['short-inflexible-nondirectional', 'CommandOrControlLeft+CommandOrControlRight', 'CmdLeft+CmdRight'],
+        ['electron', '+', '+']
       ];
 
       for ( const [format, input, output] of tests ) {

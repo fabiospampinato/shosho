@@ -27,7 +27,7 @@ const shortcut2ids = ( shortcut: string, formatting: boolean = false ): bigint[]
 
 const chord2ids = ( chord: string, formatting: boolean = false ): bigint[] => {
   const map = formatting ? NAME_FORMATTING2ID : NAME2ID;
-  const keys = chord.replace ( PLUSES_RE, '+Plus' ).toLowerCase ().split ( '+' );
+  const keys = chord.replace ( PLUSES_RE, '+Plus' ).toLowerCase ().replace ( /(\S)\+/g, '$1 ' ).split ( WHITESPACE_RE );
   const parts = keys.map<bigint | bigint[]> ( key => map[key] || UNSUPPORTED );
   const ids = enumerate ( parts ).map ( or );
   return ids;
