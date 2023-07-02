@@ -21,6 +21,16 @@ const castArray = <T> ( value: T | T[] ): T[] => {
 
 };
 
+const comparator = <T extends number | bigint> ( a: T, b: T ): -1 | 0 | 1 => {
+
+  if ( a < b ) return -1;
+
+  if ( a > b ) return 1;
+
+  return 0;
+
+};
+
 const decompose = ( value: bigint ): bigint[] => { // Returns all the primitive components of a binary bigint
 
   const components: bigint[] = [];
@@ -41,7 +51,33 @@ const decompose = ( value: bigint ): bigint[] => { // Returns all the primitive 
 
 const enumerate = ( parts: (bigint | bigint[])[] ): bigint[][] => { // Exhaustively listing all possible paths from the start to the end
 
-  if ( !parts.length ) return [];
+  if ( parts.length === 0 ) {
+
+    return [];
+
+  } else if ( parts.length === 1 ) {
+
+    const part = parts[0];
+
+    if ( isArray ( part ) ) {
+
+      if ( part.length <= 1 ) {
+
+        return [part];
+
+      } else {
+
+        return part.map ( value => [value] );
+
+      }
+
+    } else {
+
+      return [[part]];
+
+    }
+
+  }
 
   const normalized = parts.map ( castArray );
   const heads = normalized[0];
@@ -88,23 +124,29 @@ const isKeyboardEvent = ( value: unknown ): value is KeyboardEvent => {
 
 };
 
-const isMac = (): boolean => {
+const isMac = ((): () => boolean => {
 
-  if ( typeof navigator === 'object' ) {
+  const isMac = ((): boolean => {
 
-    return /mac|ipod|iphone|ipad/i.test ( navigator.platform );
+    if ( typeof navigator === 'object' ) {
 
-  }
+      return /mac|ipod|iphone|ipad/i.test ( navigator.platform );
 
-  if ( typeof globalThis['process'] === 'object' ) {
+    }
 
-    return globalThis['process']['platform'] === 'darwin';
+    if ( typeof globalThis['process'] === 'object' ) {
 
-  }
+      return globalThis['process']['platform'] === 'darwin';
 
-  return false;
+    }
 
-};
+    return false;
+
+  })();
+
+  return () => isMac;
+
+})();
 
 const isMouseEvent = ( value: unknown ): value is MouseEvent => {
 
@@ -118,9 +160,35 @@ const isString = ( value: unknown ): value is string => {
 
 };
 
+const isUndefined = ( value: unknown ): value is undefined => {
+
+  return value === undefined;
+
+};
+
 const last = <T> ( values: T[] ): T | undefined => {
 
   return values[values.length - 1];
+
+};
+
+const memoize = <T, R> ( fn: ( arg: T ) => R ): (( arg: T ) => R) => {
+
+  const cache = new Map ();
+
+  return ( arg: T ): R => {
+
+    const resultCached = cache.get ( arg );
+
+    if ( !isUndefined ( resultCached ) || cache.has ( arg ) ) return resultCached;
+
+    const result = fn ( arg );
+
+    cache.set ( arg, result );
+
+    return result;
+
+  };
 
 };
 
@@ -163,11 +231,15 @@ const takeRight = <T> ( arr: T[], nr: number ): T[] => {
 
 const uniq = <T> ( values: T[] ): T[] => {
 
+  if ( values.length <= 1 ) return values;
+
   return Array.from ( new Set ( values ) );
 
 };
 
 const without = <T> ( values: T[], except: T ): T[] => {
+
+  if ( !values.includes ( except ) ) return values;
 
   return values.filter ( value => value !== except );
 
@@ -181,4 +253,4 @@ const yep = (): true => {
 
 /* EXPORT */
 
-export {attempt, castArray, decompose, enumerate, first, isArray, isKeyboardEvent, isMac, isMouseEvent, isString, last, nope, or, orWith, take, takeRight, uniq, without, yep};
+export {attempt, castArray, comparator, decompose, enumerate, first, isArray, isKeyboardEvent, isMac, isMouseEvent, isString, last, memoize, nope, or, orWith, take, takeRight, uniq, without, yep};

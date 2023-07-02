@@ -32,9 +32,9 @@ type ChordNode = {
 };
 
 type HandlerNode = {
-  parent?: ChordNode,
-  prev?: HandlerNode,
-  next?: HandlerNode,
+  parent: ChordNode | undefined,
+  prev: HandlerNode | undefined,
+  next: HandlerNode | undefined,
   handler: Handler
 };
 

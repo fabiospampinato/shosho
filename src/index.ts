@@ -3,9 +3,9 @@
 
 import {DEFAULT_FORMAT_FORMAT, DEFAULT_RECORD_FORMAT} from './constants';
 import {MODIFIER_BITMASK, TRIGGER_BITMASK, UNSUPPORTED} from './constants';
-import {PLUSES_RE, WHITESPACE_RE} from './constants';
+import {PLUS_JOINER_RE, PLUSES_RE, WHITESPACE_RE} from './constants';
 import {CODE2ID, CODE_RISKY2ID, ID2FORMAT_TITLE, ID2FORMAT_ELECTRON, ID2FORMAT_SYMBOL, KEY_UNSUPPORTED2ID, KEY2ID, MOUSE2ID, NAME2ID, NAME_FORMATTING2ID, WHICH2ID} from './maps';
-import {attempt, castArray, decompose, enumerate, first, isKeyboardEvent, isMac, isMouseEvent, isString, nope, or, orWith, takeRight, uniq, without, yep} from './utils';
+import {attempt, castArray, comparator, decompose, enumerate, first, isKeyboardEvent, isMac, isMouseEvent, isString, memoize, nope, or, orWith, takeRight, uniq, without, yep} from './utils';
 import type {Checker, Disposer, Format, Handler, ChordNode, HandlerNode, HandlerOptions, Options, RecordHandler, RecordOptions} from './types';
 
 /* HELPERS */ //TODO: Maybe move these elsewhere
@@ -18,25 +18,31 @@ const id2trigger = ( id: bigint ): bigint => {
   return ( id & TRIGGER_BITMASK );
 };
 
-const shortcut2keys = ( shortcut: string ): string[] => {
-  const keys = shortcut.trim ().replace ( PLUSES_RE, '+Plus' ).replace ( /(\S)\+/g, '$1 ' ).split ( WHITESPACE_RE );
+const shortcut2keys = memoize ( ( shortcut: string ): string[] => {
+  const keys = shortcut.trim ().replace ( PLUSES_RE, '+Plus' ).replace ( PLUS_JOINER_RE, '$1 ' ).toLowerCase ().split ( WHITESPACE_RE );
   return keys;
-};
+});
 
-const shortcut2ids = ( shortcut: string, formatting: boolean = false ): bigint[][] => {
+const shortcut2ids = memoize ( ( shortcut: string ): bigint[][] => {
   const chords = shortcut.trim ().split ( WHITESPACE_RE );
-  const parts = chords.map ( chord => chord2ids ( chord, formatting ) );
+  const parts = chords.map ( chord2ids );
   const ids = enumerate ( parts );
   return ids;
-};
+});
 
-const chord2ids = ( chord: string, formatting: boolean = false ): bigint[] => {
-  const map = formatting ? NAME_FORMATTING2ID : NAME2ID;
-  const keys = chord.replace ( PLUSES_RE, '+Plus' ).toLowerCase ().replace ( /(\S)\+/g, '$1 ' ).split ( WHITESPACE_RE );
-  const parts = keys.map<bigint | bigint[]> ( key => map[key] || UNSUPPORTED );
+const shortcut2id_decomposed = memoize ( ( shortcut: string ): bigint[][] => {
+  const chords = shortcut.trim ().split ( WHITESPACE_RE );
+  const keys = chords.map ( shortcut2keys );
+  const ids = keys.map ( keys => keys.map ( key => NAME_FORMATTING2ID[key] || UNSUPPORTED ) );
+  return ids;
+});
+
+const chord2ids = memoize ( ( chord: string ): bigint[] => {
+  const keys = shortcut2keys ( chord );
+  const parts = keys.map<bigint | bigint[]> ( key => NAME2ID[key] || UNSUPPORTED );
   const ids = enumerate ( parts ).map ( or );
   return ids;
-};
+});
 
 const event2ids = ( event: Event ): bigint[] => { // Returning all possible detected ids, to support every scenario
   if ( isKeyboardEvent ( event ) ) {
@@ -78,6 +84,9 @@ class ShoSho {
   private tree: ChordNode = {
     children: {},
     handlers: {
+      parent: undefined,
+      prev: undefined,
+      next: undefined,
       handler: nope
     }
   };
@@ -85,6 +94,9 @@ class ShoSho {
   private treeKonami: ChordNode = {
     children: {},
     handlers: {
+      parent: undefined,
+      prev: undefined,
+      next: undefined,
       handler: nope
     }
   };
@@ -323,7 +335,7 @@ class ShoSho {
 
   register = ( shortcut: string | string[], handler: Handler, options: HandlerOptions = {} ): Disposer => {
 
-    const chordseses = castArray ( shortcut ).map ( shortcut => shortcut2ids ( shortcut ) );
+    const chordseses = castArray ( shortcut ).map ( shortcut2ids );
     const nodes: HandlerNode[] = [];
     const konami = !!options.konami;
 
@@ -341,6 +353,9 @@ class ShoSho {
           node = node.children[String ( chord )] ||= {
             children: {},
             handlers: {
+              parent: undefined,
+              prev: undefined,
+              next: undefined,
               handler: nope
             }
           };
@@ -364,6 +379,7 @@ class ShoSho {
         node.handlers = handlers.next = {
           parent: node,
           prev: handlers,
+          next: undefined,
           handler
         };
 
@@ -516,10 +532,8 @@ class ShoSho {
     const formatKeysJoiner = ( format === 'symbols' ) ? '' : '+';
     const formatShortcutsJoiner = ' ';
 
-    const chords = isString ( shortcut ) ? first ( shortcut2ids ( shortcut, true ) ) || [] : castArray ( shortcut );
-    const components = chords.map ( chord => ( chord === UNSUPPORTED ) ? [] : decompose ( chord ) );
-
-    let output = components.map ( component => component.map ( id => formatMap[id] || '§' ).join ( formatKeysJoiner ) ).join ( formatShortcutsJoiner );
+    let outputIds = isString ( shortcut ) ? shortcut2id_decomposed ( shortcut ) : castArray ( shortcut ).map ( chord => ( chord === UNSUPPORTED ) ? [] : decompose ( chord ) );
+    let output = outputIds.map ( keys => keys.sort ( comparator ).map ( key => formatMap[key] || '§' ).join ( formatKeysJoiner ) ).join ( formatShortcutsJoiner );
 
     if ( format.includes ( '-nondirectional' ) ) {
 
@@ -583,14 +597,14 @@ class ShoSho {
 
   };
 
-  static isShortcut = ( shortcut: string ): boolean => {
+  static isShortcut = memoize ( ( shortcut: string ): boolean => {
 
-    const keys = shortcut2keys ( shortcut ).map ( key => key.toLowerCase () );
+    const keys = shortcut2keys ( shortcut );
     const isValid = keys.every ( key => key in NAME2ID );
 
     return isValid;
 
-  };
+  });
 
   static record = ( handler: RecordHandler, options: RecordOptions = {} ): Disposer => {
 
