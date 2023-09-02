@@ -19,7 +19,7 @@ const id2trigger = ( id: bigint ): bigint => {
 };
 
 const shortcut2keys = memoize ( ( shortcut: string ): string[] => {
-  const keys = shortcut.trim ().replace ( PLUSES_RE, '+Plus' ).replace ( PLUS_JOINER_RE, '$1 ' ).toLowerCase ().split ( WHITESPACE_RE );
+  const keys = shortcut.trim ().replace ( PLUSES_RE, '+Plus' ).replace ( PLUS_JOINER_RE, '$1 ' ).toLowerCase ().split ( WHITESPACE_RE ).filter ( Boolean );
   return keys;
 });
 

@@ -14,6 +14,17 @@ describe ( 'ShoSho', () => {
     it ( 'supports formatting shortcuts in different formats', t => {
 
       const tests = [
+        // Empty
+        ['electron', '', ''],
+        ['symbols', '', ''],
+        ['long-flexible-directional', '', ''],
+        ['long-flexible-nondirectional', '', ''],
+        ['long-inflexible-directional', '', ''],
+        ['long-inflexible-nondirectional', '', ''],
+        ['short-flexible-directional', '', ''],
+        ['short-flexible-nondirectional', '', ''],
+        ['short-inflexible-directional', '', ''],
+        ['short-inflexible-nondirectional', '', ''],
         // Control+A
         ['electron', 'Control+A', 'Ctrl+A'],
         ['symbols', 'Control+A', '⌃A'],
