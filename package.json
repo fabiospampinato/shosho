@@ -2,7 +2,7 @@
   "name": "shosho",
   "repository": "github:fabiospampinato/shosho",
   "description": "A modern and powerful shortcuts management library.",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "type": "module",
   "main": "dist/index.js",
   "exports": "./dist/index.js",
