@@ -55,7 +55,8 @@ type RecordHandler = {
 type RecordOptions = {
   limit?: number,
   passthrough?: boolean,
-  shouldHandleEvent?: ( event: Event ) => boolean
+  shouldHandleEvent?: ( event: Event ) => boolean,
+  showModifiers?: boolean,
 };
 
 /* EXPORT */

@@ -14,8 +14,8 @@ const has = ( id: bigint, key: bigint ): boolean => {
   return !!( id & key );
 };
 
-const id2trigger = ( id: bigint ): bigint => {
-  return ( id & TRIGGER_BITMASK );
+const id2trigger = ( id: bigint, showModifiers: boolean ): bigint => {
+  return ( id & (showModifiers ? TRIGGER_BITMASK ^ MODIFIER_BITMASK : TRIGGER_BITMASK) );
 };
 
 const shortcut2keys = memoize ( ( shortcut: string ): string[] => {
@@ -78,6 +78,7 @@ class ShoSho {
   private depthKonami: number;
   private depthRecorder: number;
   private shouldHandle: Checker;
+  private showModifiers: boolean;
   private options: Options;
   private recorder?: RecordHandler;
 
@@ -112,6 +113,7 @@ class ShoSho {
     this.depthKonami = 0;
     this.depthRecorder = 0;
     this.shouldHandle = options.shouldHandleEvent || yep;
+    this.showModifiers = false;
     this.options = options;
 
   }
@@ -226,7 +228,7 @@ class ShoSho {
         this.chordsKonami[indexKonami] = chordKonami | id;
 
         const handled = !this.recorder && attempt ( () => this.trigger ( this.chords, event ), false );
-        const triggered = !!id2trigger ( this.chords[index] );
+        const triggered = !!id2trigger ( this.chords[index], this.showModifiers );
         const isLast = handled || ( isLastId && isLastChord );
 
         if ( !isLast ) continue;
@@ -624,6 +626,7 @@ class ShoSho {
     });
 
     shortcuts.depthRecorder = options.limit ?? 10;
+    shortcuts.showModifiers = options.showModifiers ?? false;
 
     return shortcuts.record ( handler );
 
