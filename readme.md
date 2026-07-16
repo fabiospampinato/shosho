@@ -7,7 +7,7 @@ A modern and powerful shortcuts management library.
 - It is largely built on top of [`KeyboardEvent#code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code) and [`KeyboardEvent#key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key), for great compatibility across browsers, platforms, languages and layouts.
 - It is _fast_. Almost always this library will do `O(1)` registrations, `O(1)` disposals, `O(1)` lookups and `O(1)` resetting.
 - It supports ~100 keyboard keys, including function keys and numpad keys.
-- It supports mouse buttons too, which can be mixed in shortcts with keyboard keys, like `Ctrl+ClickLeft`.
+- It supports mouse buttons too, which can be mixed in shortcuts with keyboard keys, like `Ctrl+ClickLeft`.
 - It supports simple shortcuts, like `Ctrl+F`, and shortcuts sequences, like `Ctrl+K Ctrl+F`.
 - It supports detecting which exact modifier key was pressed, like `ControlLeft` or `ControlRight`.
 - It supports common aliases for keys, like `Alt`/`Option`, or `Esc`/`Escape`.
