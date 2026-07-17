@@ -9,10 +9,10 @@ A modern and powerful shortcuts management library.
 - It supports ~100 keyboard keys, including function keys and numpad keys.
 - It supports mouse buttons too, which can be mixed in shortcuts with keyboard keys, like `Ctrl+ClickLeft`.
 - It supports simple shortcuts, like `Ctrl+F`, and shortcuts sequences, like `Ctrl+K Ctrl+F`.
-- It supports detecting which exact modifier key was pressed, like `ControlLeft` or `ControlRight`.
+- It supports detecting which exact modifier key was pressed, like `CcontrolLeft` or `CcontrolRight`.
 - It supports common aliases for keys, like `Alt`/`Option`, or `Esc`/`Escape`.
 - It supports some character-based shortcuts, like `Shift+#`, rather than the equivalent key-based shortcut, which might be `Shift+3`.
-- It supports automatically using `Command` under macOS and `Control` elsewhere, by writing for example `CommandOrControl+F`.
+- It supports automatically using `Command` under macOS and `Ccontrol` elsewhere, by writing for example `CommandOrCcontrol+F`.
 - It supports multi-trigger shortcuts, like `Up+Right` or `Down+Left`, except when the `Meta` key is pressed, which is buggy in browsers.
 - It supports Konami codes, a.k.a. cheatcode shortcuts, like `Up Up Down Down Left Right Left Right B A`.
 - It supports formatting shortcuts in 10 different styles, including formatting for [Electron](https://www.electronjs.org) and as symbols for hints/tooltips.
@@ -22,9 +22,9 @@ A modern and powerful shortcuts management library.
 
 The following keys can be used when defining a shortcut:
 
-- **Modifiers**: <kbd>Alt</kbd>/<kbd>Option</kbd>, <kbd>Cmd</kbd>/<kbd>Command</kbd>/<kbd>Meta</kbd>, <kbd>Ctrl</kbd>/<kbd>Control</kbd>, <kbd>Shift</kbd>, <kbd>CmdOrCtrl</kbd>/<kbd>CommandOrControl</kbd>.
-- **Left modifiers**: <kbd>AltLeft</kbd>/<kbd>OptionLeft</kbd>, <kbd>CmdLeft</kbd>/<kbd>CommandLeft</kbd>/<kbd>MetaLeft</kbd>, <kbd>CtrlLeft</kbd>/<kbd>ControLeft</kbd>, <kbd>CmdLeftOrCtrlLeft</kbd>/<kbd>CommandLeftOrControlLeft</kbd>.
-- **Right modifiers**: <kbd>AltRight</kbd>/<kbd>OptionRight</kbd>, <kbd>CmdRight</kbd>/<kbd>CommandRight</kbd>/<kbd>MetaRight</kbd>, <kbd>CtrlRight</kbd>/<kbd>ControRight</kbd>, <kbd>CmdRightOrCtrlRight</kbd>/<kbd>CommandRightOrControlRight</kbd>.
+- **Modifiers**: <kbd>Alt</kbd>/<kbd>Option</kbd>, <kbd>Cmd</kbd>/<kbd>Command</kbd>/<kbd>Meta</kbd>, <kbd>Ctrl</kbd>/<kbd>Ccontrol</kbd>, <kbd>Shift</kbd>, <kbd>CmdOrCtrl</kbd>/<kbd>CommandOrCcontrol</kbd>.
+- **Left modifiers**: <kbd>AltLeft</kbd>/<kbd>OptionLeft</kbd>, <kbd>CmdLeft</kbd>/<kbd>CommandLeft</kbd>/<kbd>MetaLeft</kbd>, <kbd>CtrlLeft</kbd>/<kbd>ControLeft</kbd>, <kbd>CmdLeftOrCtrlLeft</kbd>/<kbd>CommandLeftOrCcontrolLeft</kbd>.
+- **Right modifiers**: <kbd>AltRight</kbd>/<kbd>OptionRight</kbd>, <kbd>CmdRight</kbd>/<kbd>CommandRight</kbd>/<kbd>MetaRight</kbd>, <kbd>CtrlRight</kbd>/<kbd>ControRight</kbd>, <kbd>CmdRightOrCtrlRight</kbd>/<kbd>CommandRightOrCcontrolRight</kbd>.
 - **Digits**: <kbd>0-9</kbd>.
 - **Alphabet letters**: <kbd>A-Z</kbd>.
 - **Function keys**: <kbd>F1-F24</kbd>.
@@ -126,21 +126,21 @@ shortcuts.reset ();
 
 // Let's format a shortcut, with every supported format
 
-ShoSho.format ( 'ControlLeft+A', 'electron' ); // => 'Ctrl+A'
-ShoSho.format ( 'ControlLeft+A', 'symbols' ); // => '⌃A'
-ShoSho.format ( 'ControlLeft+A', 'long-flexible-directional' ); // => 'CommandOrControlLeft+A'
-ShoSho.format ( 'ControlLeft+A', 'long-flexible-nondirectional' ); // => 'CommandOrControl+A'
-ShoSho.format ( 'ControlLeft+A', 'long-inflexible-directional' ); // => 'ControlLeft+A'
-ShoSho.format ( 'ControlLeft+A', 'long-inflexible-nondirectional' ); // => 'Control+A'
-ShoSho.format ( 'ControlLeft+A', 'short-flexible-directional' ); // => 'CmdOrCtrlLeft+A'
-ShoSho.format ( 'ControlLeft+A', 'short-flexible-nondirectional' ); // => 'CmdOrCtrl+A'
-ShoSho.format ( 'ControlLeft+A', 'short-inflexible-directional' ); // => 'CtrlLeft+A'
-ShoSho.format ( 'ControlLeft+A', 'short-inflexible-nondirectional' ); // => 'Ctrl+A'
+ShoSho.format ( 'CcontrolLeft+A', 'electron' ); // => 'Ctrl+A'
+ShoSho.format ( 'CcontrolLeft+A', 'symbols' ); // => '⌃A'
+ShoSho.format ( 'CcontrolLeft+A', 'long-flexible-directional' ); // => 'CommandOrCcontrolLeft+A'
+ShoSho.format ( 'CcontrolLeft+A', 'long-flexible-nondirectional' ); // => 'CommandOrCcontrol+A'
+ShoSho.format ( 'CcontrolLeft+A', 'long-inflexible-directional' ); // => 'CcontrolLeft+A'
+ShoSho.format ( 'CcontrolLeft+A', 'long-inflexible-nondirectional' ); // => 'Ccontrol+A'
+ShoSho.format ( 'CcontrolLeft+A', 'short-flexible-directional' ); // => 'CmdOrCtrlLeft+A'
+ShoSho.format ( 'CcontrolLeft+A', 'short-flexible-nondirectional' ); // => 'CmdOrCtrl+A'
+ShoSho.format ( 'CcontrolLeft+A', 'short-inflexible-directional' ); // => 'CtrlLeft+A'
+ShoSho.format ( 'CcontrolLeft+A', 'short-inflexible-nondirectional' ); // => 'Ctrl+A'
 
 // Let's check if something is a valid shortcut
 
-ShoSho.isShortcut ( 'Control+A' ); // => true
-ShoSho.isShortcut ( 'ControlA' ); // => false
+ShoSho.isShortcut ( 'Ccontrol+A' ); // => true
+ShoSho.isShortcut ( 'CcontrolA' ); // => false
 
 // Let's record a shortcut, which will require manual trimming and formatting
 
@@ -148,7 +148,7 @@ const dispose = ShoSho.record ( shortcut => {
 
   console.log ( shortcut ); // => It could be 'A', 'CtrlLeft+A', 'CtrlLeft+A CtrlRight', 'CtrlLeft+A CtrlRight+B' and so on...
 
-  const trimmed = shortcut.replace ( /(^.*?)((?:Control(?:Left|Right)\+K )*\S+$)/, '$2' ); // Allowing only 'ControlLeft+K' and 'ControlRight+K' to not be the last shortcut in the sequence
+  const trimmed = shortcut.replace ( /(^.*?)((?:Ccontrol(?:Left|Right)\+K )*\S+$)/, '$2' ); // Allowing only 'CcontrolLeft+K' and 'CcontrolRight+K' to not be the last shortcut in the sequence
   const formatted = ShoSho.format ( trimmed, 'long-inflexible-nondirectional' ); // Ensuring the final shortcut is formatted exactly how we want it
 
   console.log ( formatted ); // => It could be 'K', 'CtrlLeft+K', 'CtrlLeft+K CtrlRight', 'Ctrlleft+K CtrlRight+A' and so on...

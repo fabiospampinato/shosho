@@ -5,8 +5,8 @@ import {isMac} from './utils';
 
 /* MODIFIERS */
 
-const ControlLeft = 1n << 0n;
-const ControlRight = 1n << 1n;
+const CcontrolLeft = 1n << 0n;
+const CcontrolRight = 1n << 1n;
 const MetaLeft = 1n << 2n;
 const MetaRight = 1n << 3n;
 const OSLeft = 1n << 2n;
@@ -18,13 +18,13 @@ const ShiftRight = 1n << 7n;
 
 /* VIRTUAL MODIFIERS */
 
-const Control = 1n << 8n;
+const Ccontrol = 1n << 8n;
 const Command = 1n << 9n;
 const Alt = 1n << 10n;
 const Shift = 1n << 11n;
-const CommandOrControl = 1n << 12n;
-const CommandOrControlLeft = 1n << 13n;
-const CommandOrControlRight = 1n << 14n;
+const CommandOrCcontrol = 1n << 12n;
+const CommandOrCcontrolLeft = 1n << 13n;
+const CommandOrCcontrolRight = 1n << 14n;
 
 /* DIGITS */
 
@@ -204,8 +204,8 @@ const PlusMinus = 1n << 155n;
 
 const CODE2ID = <const> {
   /* MODIFIERS */
-  ControlLeft,
-  ControlRight,
+  CcontrolLeft,
+  CcontrolRight,
   MetaLeft,
   MetaRight,
   OSLeft,
@@ -299,8 +299,8 @@ const CODE_RISKY2ID = <const> {
 
 const ID2FORMAT_TITLE = <const> {
   /* MODIFIERS */
-  [ControlLeft]: 'ControlLeft',
-  [ControlRight]: 'ControlRight',
+  [CcontrolLeft]: 'CcontrolLeft',
+  [CcontrolRight]: 'CcontrolRight',
   [MetaLeft]: 'CommandLeft',
   [MetaRight]: 'CommandRight',
   [OSLeft]: 'CommandLeft',
@@ -310,13 +310,13 @@ const ID2FORMAT_TITLE = <const> {
   [ShiftLeft]: 'ShiftLeft',
   [ShiftRight]: 'ShiftRight',
   /* VIRTUAL MODIFIERS */
-  [Control]: 'Control',
+  [Ccontrol]: 'Ccontrol',
   [Command]: 'Command',
   [Alt]: 'Alt',
   [Shift]: 'Shift',
-  [CommandOrControl]: 'CommandOrControl',
-  [CommandOrControlLeft]: 'CommandOrControlLeft',
-  [CommandOrControlRight]: 'CommandOrControlRight',
+  [CommandOrCcontrol]: 'CommandOrCcontrol',
+  [CommandOrCcontrolLeft]: 'CommandOrCcontrolLeft',
+  [CommandOrCcontrolRight]: 'CommandOrCcontrolRight',
   /* DIGITS */
   [Digit0]: '0',
   [Digit1]: '1',
@@ -472,8 +472,8 @@ const ID2FORMAT_TITLE = <const> {
 
 const ID2FORMAT_ELECTRON = <const> {
   /* MODIFIERS */
-  [ControlLeft]: 'Ctrl',
-  [ControlRight]: 'Ctrl',
+  [CcontrolLeft]: 'Ctrl',
+  [CcontrolRight]: 'Ctrl',
   [MetaLeft]: 'Cmd',
   [MetaRight]: 'Cmd',
   [OSLeft]: 'Cmd',
@@ -483,13 +483,13 @@ const ID2FORMAT_ELECTRON = <const> {
   [ShiftLeft]: 'Shift',
   [ShiftRight]: 'Shift',
   /* VIRTUAL MODIFIERS */
-  [Control]: 'Ctrl',
+  [Ccontrol]: 'Ctrl',
   [Command]: 'Cmd',
   [Alt]: 'Alt',
   [Shift]: 'Shift',
-  [CommandOrControl]: 'CmdOrCtrl',
-  [CommandOrControlLeft]: 'CmdOrCtrl',
-  [CommandOrControlRight]: 'CmdOrCtrl',
+  [CommandOrCcontrol]: 'CmdOrCtrl',
+  [CommandOrCcontrolLeft]: 'CmdOrCtrl',
+  [CommandOrCcontrolRight]: 'CmdOrCtrl',
   /* DIGITS */
   [Digit0]: '0',
   [Digit1]: '1',
@@ -645,8 +645,8 @@ const ID2FORMAT_ELECTRON = <const> {
 
 const ID2FORMAT_SYMBOL = <const> {
   /* MODIFIERS */
-  [ControlLeft]: '⌃',
-  [ControlRight]: '⌃',
+  [CcontrolLeft]: '⌃',
+  [CcontrolRight]: '⌃',
   [MetaLeft]: '⌘',
   [MetaRight]: '⌘',
   [OSLeft]: '⌘',
@@ -656,13 +656,13 @@ const ID2FORMAT_SYMBOL = <const> {
   [ShiftLeft]: '⇧',
   [ShiftRight]: '⇧',
   /* VIRTUAL MODIFIERS */
-  [Control]: '⌃',
+  [Ccontrol]: '⌃',
   [Command]: '⌘',
   [Alt]: '⌥',
   [Shift]: '⇧',
-  [CommandOrControl]: isMac () ? '⌘' : '⌃',
-  [CommandOrControlLeft]: isMac () ? '⌘' : '⌃',
-  [CommandOrControlRight]: isMac () ? '⌘' : '⌃',
+  [CommandOrCcontrol]: isMac () ? '⌘' : '⌃',
+  [CommandOrCcontrolLeft]: isMac () ? '⌘' : '⌃',
+  [CommandOrCcontrolRight]: isMac () ? '⌘' : '⌃',
   /* DIGITS */
   [Digit0]: '0',
   [Digit1]: '1',
@@ -966,26 +966,26 @@ const NAME2ID = <const> {
   metaleft: MetaLeft,
   metaright: MetaRight,
   meta: [MetaLeft, MetaRight],
-  ctrlleft: ControlLeft,
-  ctrlright: ControlRight,
-  ctrl: [ControlLeft, ControlRight],
-  controlleft: ControlLeft,
-  controlright: ControlRight,
-  control: [ControlLeft, ControlRight],
+  ctrlleft: CcontrolLeft,
+  ctrlright: CcontrolRight,
+  ctrl: [CcontrolLeft, CcontrolRight],
+  ccontrolleft: CcontrolLeft,
+  ccontrolright: CcontrolRight,
+  ccontrol: [CcontrolLeft, CcontrolRight],
   shiftleft: ShiftLeft,
   shiftright: ShiftRight,
   shift: [ShiftLeft, ShiftRight],
   /* VIRTUAL MODIFIERS */
-  cmdleftorctrlleft: isMac () ? MetaLeft : ControlLeft,
-  cmdrightorctrlright: isMac () ? MetaRight : ControlRight,
-  cmdorctrlleft: isMac () ? MetaLeft : ControlLeft,
-  cmdorctrlright: isMac () ? MetaRight : ControlRight,
-  cmdorctrl: isMac () ? [MetaLeft, MetaRight] : [ControlLeft, ControlRight],
-  commandleftorcontrolleft: isMac () ? MetaLeft : ControlLeft,
-  commandrightorcontrolright: isMac () ? MetaRight : ControlRight,
-  commandorcontrolleft: isMac () ? MetaLeft : ControlLeft,
-  commandorcontrolright: isMac () ? MetaRight : ControlRight,
-  commandorcontrol: isMac () ? [MetaLeft, MetaRight] : [ControlLeft, ControlRight],
+  cmdleftorctrlleft: isMac () ? MetaLeft : CcontrolLeft,
+  cmdrightorctrlright: isMac () ? MetaRight : CcontrolRight,
+  cmdorctrlleft: isMac () ? MetaLeft : CcontrolLeft,
+  cmdorctrlright: isMac () ? MetaRight : CcontrolRight,
+  cmdorctrl: isMac () ? [MetaLeft, MetaRight] : [CcontrolLeft, CcontrolRight],
+  commandleftorccontrolleft: isMac () ? MetaLeft : CcontrolLeft,
+  commandrightorccontrolright: isMac () ? MetaRight : CcontrolRight,
+  commandorccontrolleft: isMac () ? MetaLeft : CcontrolLeft,
+  commandorccontrolright: isMac () ? MetaRight : CcontrolRight,
+  commandorccontrol: isMac () ? [MetaLeft, MetaRight] : [CcontrolLeft, CcontrolRight],
   /* MOUSE */
   clickleft: Mouse0,
   clickmiddle: Mouse1,
@@ -1089,22 +1089,22 @@ const NAME_FORMATTING2ID = <const> {
   /* REGULARS */
   ...NAME2ID,
   /* VIRTUAL MODIFIERS */
-  ctrl: Control,
-  control: Control,
+  ctrl: Ccontrol,
+  ccontrol: Ccontrol,
   cmd: Command,
   command: Command,
   alt: Alt,
   shift: Shift,
-  cmdleftorctrlleft: CommandOrControlLeft,
-  cmdrightorctrlright: CommandOrControlRight,
-  cmdorctrlleft: CommandOrControlLeft,
-  cmdorctrlright: CommandOrControlRight,
-  cmdorctrl: CommandOrControl,
-  commandleftorcontrolleft: CommandOrControlLeft,
-  commandrightorcontrolright: CommandOrControlRight,
-  commandorcontrolleft: CommandOrControlLeft,
-  commandorcontrolright: CommandOrControlRight,
-  commandorcontrol: CommandOrControl
+  cmdleftorctrlleft: CommandOrCcontrolLeft,
+  cmdrightorctrlright: CommandOrCcontrolRight,
+  cmdorctrlleft: CommandOrCcontrolLeft,
+  cmdorctrlright: CommandOrCcontrolRight,
+  cmdorctrl: CommandOrCcontrol,
+  commandleftorccontrolleft: CommandOrCcontrolLeft,
+  commandrightorccontrolright: CommandOrCcontrolRight,
+  commandorccontrolleft: CommandOrCcontrolLeft,
+  commandorccontrolright: CommandOrCcontrolRight,
+  commandorccontrol: CommandOrCcontrol
 };
 
 const WHICH2ID = <const> {

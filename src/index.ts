@@ -144,17 +144,17 @@ class ShoSho {
     let addId = 0n;
 
     const hasAlt = has ( chord, CODE2ID.AltLeft ) || has ( chord, CODE2ID.AltRight );
-    const hasCtrl = has ( chord, CODE2ID.ControlLeft ) || has ( chord, CODE2ID.ControlRight );
+    const hasCtrl = has ( chord, CODE2ID.CcontrolLeft ) || has ( chord, CODE2ID.CcontrolRight );
     const hasMeta = has ( chord, CODE2ID.MetaLeft ) || has ( chord, CODE2ID.MetaRight );
     const hasShift = has ( chord, CODE2ID.ShiftLeft ) || has ( chord, CODE2ID.ShiftRight );
 
     const isAlt = code === 'AltLeft' || code === 'AltRight';
-    const isCtrl = code === 'ControlLeft' || code === 'ControlRight';
+    const isCtrl = code === 'CcontrolLeft' || code === 'CcontrolRight';
     const isMeta = code === 'MetaLeft' || code === 'MetaRight' || code === 'OSLeft' || code === 'OSRight';
     const isShift = code === 'ShiftLeft' || code === 'ShiftRight';
 
     if ( altKey && !hasAlt && !isAlt ) addId |= CODE2ID.AltLeft;
-    if ( ctrlKey && !hasCtrl && !isCtrl ) addId |= CODE2ID.ControlLeft;
+    if ( ctrlKey && !hasCtrl && !isCtrl ) addId |= CODE2ID.CcontrolLeft;
     if ( metaKey && !hasMeta && !isMeta ) addId |= CODE2ID.MetaLeft;
     if ( shiftKey && !hasShift && !isShift ) addId |= CODE2ID.ShiftLeft;
 
@@ -170,7 +170,7 @@ class ShoSho {
     let deleteId = 0n;
 
     if ( !altKey ) deleteId |= CODE2ID.AltLeft | CODE2ID.AltRight;
-    if ( !ctrlKey ) deleteId |= CODE2ID.ControlLeft | CODE2ID.ControlRight;
+    if ( !ctrlKey ) deleteId |= CODE2ID.CcontrolLeft | CODE2ID.CcontrolRight;
     if ( !metaKey ) deleteId |= CODE2ID.MetaLeft | CODE2ID.MetaRight;
     if ( !shiftKey ) deleteId |= CODE2ID.ShiftLeft | CODE2ID.ShiftRight;
 
@@ -539,12 +539,12 @@ class ShoSho {
 
       /* SPARING LEFT+RIGHT MODIFIERS IN A SHORTCUT */
 
-      output = output.replace ( /(CommandOrControl|Control|Command|Alt|Shift)Left(\S+)\1Right/g, '$1§eft$2$1§ight' );
-      output = output.replace ( /(CommandOrControl|Control|Command|Alt|Shift)Right(\S+)\1Left/g, '$1§ight$2$1§eft' );
+      output = output.replace ( /(CommandOrCcontrol|Ccontrol|Command|Alt|Shift)Left(\S+)\1Right/g, '$1§eft$2$1§ight' );
+      output = output.replace ( /(CommandOrCcontrol|Ccontrol|Command|Alt|Shift)Right(\S+)\1Left/g, '$1§ight$2$1§eft' );
 
       /* REMOVING LEFT/RIGHT SUFFIXES FROM MODIFIERS */
 
-      output = output.replace ( /(Control|Command|Alt|Shift)(Left|Right)/g, '$1' );
+      output = output.replace ( /(Ccontrol|Command|Alt|Shift)(Left|Right)/g, '$1' );
 
       /* RESTORING LEFT+RIGHT MODIFIERS IN A SHORTCUT */
 
@@ -557,9 +557,9 @@ class ShoSho {
 
       /* RESOLVING FLEXIBLE MODIFIERS */
 
-      const replacement = isMac () ? 'Command' : 'Control';
+      const replacement = isMac () ? 'Command' : 'Ccontrol';
 
-      output = output.replace ( /Command(Left|Right)?OrControl/g, replacement );
+      output = output.replace ( /Command(Left|Right)?OrCcontrol/g, replacement );
 
     }
 
@@ -567,19 +567,19 @@ class ShoSho {
 
       /* SPARING CONTROL+COMMAND IN A SHORTCUT */
 
-      output = output.replace ( /Control(\S+)Command/g, '§ontrol$1§ommand' );
-      output = output.replace ( /Command(\S+)Control/g, '§ommand$1§ontrol' );
+      output = output.replace ( /Ccontrol(\S+)Command/g, '§control$1§ommand' );
+      output = output.replace ( /Command(\S+)Ccontrol/g, '§ommand$1§control' );
 
       /* MAKING OTHERS CONTROLS/COMMANDS FLEXIBLE */
 
-      output = output.replace ( /(^|\W)Control/g, '$1CommandOrControl' );
-      output = output.replace ( /Command(?!Or|Left|Right)/g, 'CommandOrControl' );
-      output = output.replace ( /CommandLeft(?!Or)/g, 'CommandOrControlLeft' );
-      output = output.replace ( /CommandRight(?!Or)/g, 'CommandOrControlRight' );
+      output = output.replace ( /(^|\W)Ccontrol/g, '$1CommandOrCcontrol' );
+      output = output.replace ( /Command(?!Or|Left|Right)/g, 'CommandOrCcontrol' );
+      output = output.replace ( /CommandLeft(?!Or)/g, 'CommandOrCcontrolLeft' );
+      output = output.replace ( /CommandRight(?!Or)/g, 'CommandOrCcontrolRight' );
 
       /* RESTORING CONTROL+COMMAND IN A SHORTCUT */
 
-      output = output.replaceAll ( '§ontrol', 'Control' );
+      output = output.replaceAll ( '§control', 'Ccontrol' );
       output = output.replaceAll ( '§ommand', 'Command' );
 
     }
@@ -589,7 +589,7 @@ class ShoSho {
       /* SHORTHENING MODIFIERS */
 
       output = output.replaceAll ( 'Command', 'Cmd' );
-      output = output.replaceAll ( 'Control', 'Ctrl' );
+      output = output.replaceAll ( 'Ccontrol', 'Ctrl' );
 
     }
 
