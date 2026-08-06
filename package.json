@@ -13,6 +13,7 @@
     "compile:watch": "tsex compile --watch",
     "demo": "vite demo",
     "test": "tsex test",
+    "bun:test": "bun test",
     "test:watch": "tsex test --watch",
     "prepublishOnly": "tsex prepare"
   },
@@ -23,7 +24,11 @@
     "library"
   ],
   "devDependencies": {
+    "@happy-dom/global-registrator": "^12.9.1",
+    "bun": "^1.0.5",
+    "bun-types": "^1.0.5-canary.20231009T140142",
     "fava": "^0.2.1",
+    "happy-dom": "^12.9.1",
     "tsex": "^3.0.1",
     "typescript": "^5.1.6",
     "vite": "^4.4.9"
